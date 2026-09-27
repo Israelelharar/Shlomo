@@ -1,0 +1,230 @@
+<title>Paid in Full Launch Kit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Inter:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F6F2E8; --surface:#FFFDF8; --ink:#12332B; --ink-2:#3C554E; --muted:#6B7B74; --line:#DCD3BF;
+  --accent:#C98A22; --accent-soft:#F4E2BC; --dark:#12332B; --on-dark:#F4EFE3; --ok:#2F7A4A;
+  --he:'Heebo','Arial Hebrew',Arial,sans-serif; --en:'Inter',Arial,sans-serif; --display:'Fraunces',Georgia,serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --bg:#0E1F1B; --surface:#152A25; --ink:#EDE7D8; --ink-2:#C7D1CB; --muted:#93A59D; --line:#2B433C;
+    --accent:#E2A845; --accent-soft:#3A3220; --dark:#07120F; --on-dark:#F4EFE3; --ok:#6BC28D}
+}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#0E1F1B; --surface:#152A25; --ink:#EDE7D8; --ink-2:#C7D1CB; --muted:#93A59D; --line:#2B433C;
+  --accent:#E2A845; --accent-soft:#3A3220; --dark:#07120F; --on-dark:#F4EFE3; --ok:#6BC28D}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--he);font-size:16px;line-height:1.6;padding-inline:16px;padding-block:28px 60px}
+.wrap{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+h1{font-size:clamp(28px,5vw,40px);font-weight:800}
+h1 .en{font-family:var(--display);font-weight:900;color:var(--accent)}
+h2{font-size:22px;font-weight:800}
+h3{font-size:16px;font-weight:700}
+p{margin:0}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--accent)}
+.lede{color:var(--ink-2);font-size:17px;max-width:62ch}
+section{display:flex;flex-direction:column;gap:14px}
+.hero{background:var(--dark);color:var(--on-dark);border-radius:14px;padding:28px 24px;display:flex;flex-direction:column;gap:14px}
+.hero .lede{color:#C9D4CF}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid #2F4B44;border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-family:var(--display);font-size:26px;color:#E2A845;font-variant-numeric:tabular-nums;direction:ltr;text-align:right}
+.stat span{font-size:13px;color:#C9D4CF}
+.files{display:grid;gap:8px}
+.file{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}
+.file code{font-family:var(--en);font-size:13px;direction:ltr;unicode-bidi:isolate;background:var(--accent-soft);color:var(--ink);padding:2px 8px;border-radius:6px;white-space:nowrap}
+.file div{flex:1;color:var(--ink-2);font-size:15px}
+.field{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.field header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.field header small{display:block;color:var(--muted);font-weight:400;font-size:13px}
+.copy{font-family:var(--he);font-weight:700;font-size:14px;border:0;background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:8px;cursor:pointer;flex-shrink:0}
+.copy:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.copy.done{background:var(--ok);color:#fff}
+.en-block{direction:ltr;text-align:left;font-family:var(--en);font-size:15px;line-height:1.6;padding:16px;color:var(--ink)}
+.en-block h2{font-family:var(--display);font-size:20px;margin:18px 0 8px}
+.en-block h2:first-child{margin-top:0}
+.en-block ul{margin:0 0 10px;padding-left:20px}
+.en-block li{margin-bottom:4px}
+.en-block p{margin:0 0 10px}
+.en-block blockquote{margin:0 0 14px;padding:4px 0 4px 14px;border-left:3px solid var(--accent);color:var(--ink-2);font-style:italic}
+.en-block.pre{white-space:pre-wrap}
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:0;display:flex;flex-direction:column;gap:0}
+ol.steps>li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+ol.steps>li::before{content:counter(s);font-family:var(--display);font-weight:900;font-size:22px;color:var(--accent);line-height:1.3}
+ol.steps li p{color:var(--ink-2);font-size:15px;margin-top:4px}
+ol.steps li ul{margin:6px 0 0;padding-inline-start:18px;color:var(--ink-2);font-size:15px}
+.en{font-family:var(--en);direction:ltr;unicode-bidi:isolate}
+.note{background:var(--accent-soft);border-radius:12px;padding:16px 18px;font-size:15px;color:var(--ink)}
+.note b{color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td{padding:10px 4px;border-bottom:1px solid var(--line)}
+td.n{text-align:left;font-variant-numeric:tabular-nums;direction:ltr;font-family:var(--en);white-space:nowrap}
+tr.total td{font-weight:800;border-bottom:none}
+.checks{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:2px}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line);cursor:pointer;font-size:15px}
+.checks input{width:18px;height:18px;margin-top:3px;accent-color:var(--ink);flex-shrink:0}
+.src{font-size:13px;color:var(--muted)}
+.src a{color:var(--ink-2)}
+@media (prefers-reduced-motion:no-preference){.copy{transition:background .2s}}
+</style>
+
+<div class="wrap" dir="rtl">
+
+  <div class="hero">
+    <div class="eyebrow">ערכת השקה · מוכן להעלאה ל-Gumroad</div>
+    <h1>המוצר שלך: <span class="en">Paid in Full</span></h1>
+    <p class="lede">חוברת עבודה דיגיטלית לפרילנסרים: איך לתמחר נכון, לעצור עבודה חינם ולקבל תשלום בזמן. באנגלית, כדי למכור לשוק העולמי.</p>
+    <div class="stats">
+      <div class="stat"><b>$20</b><span>מחיר מומלץ</span></div>
+      <div class="stat"><b>20</b><span>עמודי PDF להדפסה</span></div>
+      <div class="stat"><b>35+</b><span>תסריטים, דפי עבודה ותבניות</span></div>
+      <div class="stat"><b>~$16.6</b><span>נכנס לך מכל מכירה ישירה</span></div>
+    </div>
+  </div>
+
+  <section>
+    <h2>למה דווקא המוצר הזה</h2>
+    <p class="lede">פרילנסרים מפסידים כסף בשלושה מקומות: מתמחרים נמוך מדי, עושים עבודה נוספת בחינם, ומחכים חודשים לתשלום. זה כאב שמרגישים ישירות בכיס, ולכן קל להצדיק הוצאה של $20. מספיק שהלקוח יעלה את המחיר פעם אחת או יגבה חשבונית אחת שנתקעה, והמוצר החזיר את עצמו. יש לו גם קהל ענק: מעצבים, מתכנתים, כותבים, צלמים, משווקים ויועצים.</p>
+  </section>
+
+  <section>
+    <h2>הקבצים שהכנתי</h2>
+    <p class="src">כולם נמצאים במאגר שלך ב-GitHub, בתיקייה <span class="en">paid-in-full</span>, וגם נשלחו אליך בשיחה.</p>
+    <div class="files">
+      <div class="file"><code>Paid-in-Full-Playbook.pdf</code><div>המוצר עצמו: 20 עמודים בגודל A4 עם כל הגופנים בפנים. את הקובץ הזה מעלים ל-Gumroad.</div></div>
+      <div class="file"><code>Paid-in-Full-Calculator.xlsx</code><div>בונוס: גיליון שמחשב את התעריף, בונה הצעת מחיר ועוקב אחרי חשבוניות. גם אותו מעלים.</div></div>
+      <div class="file"><code>thumbnail-1280.png</code><div>התמונה המרובעת של המוצר (Thumbnail).</div></div>
+      <div class="file"><code>cover-01 … cover-05.png</code><div>חמש תמונות שיווק בפורמט 16:9 לגלריה של דף המוצר, מסודרות לפי הסדר.</div></div>
+      <div class="file"><code>paid-in-full.html</code><div>קובץ המקור. אם תרצה לשנות משהו בחוברת, משנים אותו ומייצרים PDF מחדש.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>הטקסטים ל-Gumroad: להעתיק ולהדביק</h2>
+    <p class="lede">כל כפתור מעתיק את הטקסט המדויק לשדה המתאים. התיאור נשמר עם העיצוב שלו, כולל כותרות והדגשות.</p>
+
+    <div class="field"><header><h3>שם המוצר<small>Name</small></h3><button class="copy" id="c-name" data-target="t-name">העתק</button></header>
+      <div class="en-block" id="t-name">Paid in Full: The Freelancer's Pricing &amp; Getting-Paid Playbook</div></div>
+
+    <div class="field"><header><h3>משפט סיכום<small>Summary, מוצג ליד כפתור הקנייה</small></h3><button class="copy" id="c-sum" data-target="t-sum">העתק</button></header>
+      <div class="en-block" id="t-sum">A printable 20-page workbook with the worksheets, word-for-word scripts and checklists to price your work properly, stop scope creep, and get every invoice paid on time.</div></div>
+
+    <div class="field"><header><h3>תיאור המוצר<small>Description, עם עיצוב</small></h3><button class="copy" id="c-desc" data-target="t-desc" data-html="1">העתק עם עיצוב</button></header>
+      <div class="en-block" id="t-desc">
+<blockquote>You quoted low because you wanted the job. The client asked for "one small change" — then five more. The invoice was due three weeks ago, and you still feel awkward chasing it.</blockquote>
+<p><strong>Paid in Full</strong> is a practical, printable playbook that fixes the money side of freelancing. It turns the three biggest income leaks — <strong>underpricing, scope creep and late payment</strong> — into simple systems you can set up in a week.</p>
+<h2>What's inside</h2>
+<ul>
+<li><strong>Minimum Rate worksheet</strong> — calculate the hourly and day rate you actually need from your income goal, costs, taxes and real billable hours.</li>
+<li><strong>Project Quote Builder</strong> — turn hour estimates and risk into a fixed price you won't regret.</li>
+<li><strong>Good / Better / Best package builder</strong> — give clients options without cutting your rate.</li>
+<li><strong>One-page proposal template</strong> — the six sections that make "yes" easy.</li>
+<li><strong>20+ word-for-word scripts</strong> — "that's too expensive," raising your rates, discovery calls, deposits, and saying no to scope creep politely.</li>
+<li><strong>Contract essentials checklist</strong> — 15 points to have in writing before you start.</li>
+<li><strong>Copy-paste payment terms</strong> and a "no questions" invoice checklist.</li>
+<li><strong>The 5-step late-payment email sequence</strong> — friendly to firm, from 3 days before the due date to final notice, plus a phone script.</li>
+<li><strong>7-Day Action Plan</strong>, client &amp; invoice tracker, and a 12-month income dashboard.</li>
+</ul>
+<h2>Bonus: the calculator spreadsheet</h2>
+<p>An Excel / Google Sheets file that calculates your minimum rate, builds project quotes, and tracks invoices — flagging which reminder to send for each overdue one.</p>
+<h2>Who it's for</h2>
+<p>Designers, developers, writers, marketers, photographers, consultants and virtual assistants — anyone who sells their time and skills and wants to be paid properly for it.</p>
+<h2>The details</h2>
+<ul>
+<li>20-page PDF, A4, printable or fillable on a tablet</li>
+<li>Bonus .xlsx spreadsheet (works in Excel and Google Sheets)</li>
+<li>35+ scripts, worksheets and templates</li>
+<li>Instant download</li>
+</ul>
+<p><em>General business guidance, not legal, tax or financial advice. Laws on contracts and late payment vary by country — check your local rules.</em></p>
+      </div></div>
+
+    <div class="field"><header><h3>פרטים נוספים<small>Additional details, כל שורה בשדה נפרד</small></h3><button class="copy" id="c-det" data-target="t-det">העתק</button></header>
+      <div class="en-block pre" id="t-det">Format: PDF (A4) + Excel spreadsheet
+Pages: 20
+Scripts, worksheets & templates: 35+
+Time to set up: about 7 days × 30–45 min
+Printable: Yes</div></div>
+
+    <div class="field"><header><h3>הודעה מעל הקבצים<small>Content, מופיעה לקונה לפני ההורדה</small></h3><button class="copy" id="c-wel" data-target="t-wel">העתק</button></header>
+      <div class="en-block pre" id="t-wel">Welcome — and thank you for buying Paid in Full!
+
+Start here:
+1. Download the PDF and open page 2 ("Start here").
+2. Short on time? Fill in the Minimum Rate worksheet (p. 5) today.
+3. Want the full reset? Follow the 7-Day Action Plan (p. 17).
+
+The bonus spreadsheet does the rate maths for you. In Google Sheets, use File → Import to open it.
+
+To print: A4 or Letter, "Fit to page," background graphics ON.</div></div>
+
+    <div class="field"><header><h3>הודעה במייל הקבלה<small>Receipt message</small></h3><button class="copy" id="c-rec" data-target="t-rec">העתק</button></header>
+      <div class="en-block pre" id="t-rec">Thanks for your purchase! Your playbook and bonus calculator are ready to download. Start with page 5 — your Minimum Rate — it takes about 20 minutes and changes how you'll quote from now on. Reply to this email if you have any questions.</div></div>
+
+    <div class="field"><header><h3>תגיות<small>Tags</small></h3><button class="copy" id="c-tag" data-target="t-tag">העתק</button></header>
+      <div class="en-block" id="t-tag">freelance, freelancer, pricing, invoice, client, contract, small business, templates, workbook, printable</div></div>
+  </section>
+
+  <section>
+    <h2>העלאה ל-Gumroad, צעד אחר צעד</h2>
+    <ol class="steps">
+      <li><div><h3>פותחים חשבון</h3><p>נרשמים ב-<span class="en">gumroad.com</span>, ואז לוחצים <span class="en">Products → New product</span>, בוחרים <span class="en">Digital product</span> וממלאים שם ומחיר של <span class="en">$20</span>.</p></div></li>
+      <li><div><h3>ממלאים את דף המוצר</h3><p>מדביקים את השם, התיאור (עם העיצוב), משפט הסיכום והפרטים הנוספים מהכפתורים שלמעלה.</p></div></li>
+      <li><div><h3>מעלים תמונות</h3><ul><li><b>Thumbnail:</b> הקובץ <span class="en">thumbnail-1280.png</span></li><li><b>Cover:</b> <span class="en">cover-01</span> עד <span class="en">cover-05</span>, בדיוק לפי הסדר</li></ul></div></li>
+      <li><div><h3>מעלים את המוצר עצמו (הכי חשוב!)</h3><p>בלשונית <span class="en">Content</span> מעלים את <span class="en">Paid-in-Full-Playbook.pdf</span> ואת <span class="en">Paid-in-Full-Calculator.xlsx</span>, ומעליהם מדביקים את הודעת הפתיחה. <b>אם לא מעלים כאן קבצים, הלקוח משלם ולא מקבל כלום.</b></p></div></li>
+      <li><div><h3>הגדרות</h3><ul><li>לסמן <span class="en">Mark as e-publication for VAT</span>, שרלוונטי לקונים מאירופה</li><li>להגדיר מדיניות החזרים של 30 יום, שבונה אמון</li><li>לכבות את <span class="en">Show number of sales</span> עד שיהיו מכירות</li></ul></div></li>
+      <li><div><h3>פרטי תשלום</h3><p>ב-<span class="en">Settings → Payments</span> מזינים חשבון בנק או PayPal כדי לקבל את הכסף. זה לא חיוב שלך, ואין דמי מנוי חודשיים. השם צריך להיות זהה לשם בחשבון הבנק, ואת ה-<span class="en">IBAN</span> עדיף להעתיק ולהדביק ולא להקליד.</p></div></li>
+      <li><div><h3>קנייה ניסיונית</h3><p>יוצרים קוד הנחה של 100% שמיועד רק למוצר הזה, וקונים בחלון גלישה בסתר. בודקים שהגיע מייל, שהקבצים יורדים ונפתחים, ושהתמונות נראות טוב. אחרי זה מוחקים את הקוד.</p></div></li>
+      <li><div><h3>מפרסמים</h3><p>לוחצים <span class="en">Publish</span> ומשתפים את הקישור: בקבוצות פייסבוק ולינקדאין של פרילנסרים, ב-Reddit (בקהילה <span class="en">r/freelance</span>, לפי הכללים שלה) וב-Pinterest.</p></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>כמה נכנס לך מכל מכירה</h2>
+    <table>
+      <tr><td>מחיר ללקוח</td><td class="n">$20.00</td></tr>
+      <tr><td>עמלת Gumroad במכירה ישירה (10% + $0.50)</td><td class="n">−$2.50</td></tr>
+      <tr><td>עיבוד כרטיס אשראי (בערך 2.9% + $0.30)</td><td class="n">−$0.88</td></tr>
+      <tr class="total"><td>נשאר לך, בערך</td><td class="n">$16.62</td></tr>
+    </table>
+    <p class="src">אם הקונה מגיע דרך חנות Discover של Gumroad, העמלה היא 30% במקום 10% + $0.50. מקורות: <a href="https://www.wearefounders.uk/gumroad-fees-2026-what-sellers-actually-pay-per-sale/">WeAreFounders</a>, <a href="https://dodopayments.com/blogs/gumroad-fees-explained">Dodo Payments</a>. כדאי לבדוק את העמלות העדכניות באתר של Gumroad.</p>
+  </section>
+
+  <section>
+    <h2>בדיקות לפני שמפרסמים</h2>
+    <ul class="checks">
+      <li><label><input type="checkbox" id="k1">שני הקבצים הועלו ללשונית Content</label></li>
+      <li><label><input type="checkbox" id="k2">התמונה המרובעת ו-5 תמונות הגלריה הועלו לפי הסדר</label></li>
+      <li><label><input type="checkbox" id="k3">התיאור הודבק והעיצוב נשמר (כותרות והדגשות)</label></li>
+      <li><label><input type="checkbox" id="k4">פרטי התשלום הוזנו</label></li>
+      <li><label><input type="checkbox" id="k5">הקנייה הניסיונית עברה: הגיע מייל, והקבצים נפתחו</label></li>
+      <li><label><input type="checkbox" id="k6">קוד ההנחה של הבדיקה נמחק</label></li>
+    </ul>
+  </section>
+
+  <div class="note"><b>בדיקת עובדות ובטיחות:</b> בחוברת כמעט אין נתונים או סטטיסטיקות, כדי שלא יהיו טענות שאי אפשר לגבות. את הנתון המשפטי היחיד (חוק התשלומים המאוחרים בבריטניה: ריבית של 8% מעל ריבית הבסיס ופיצוי של £40–£100 לחשבונית) בדקתי מול <a class="en" href="https://www.legislation.gov.uk/ukpga/1998/20/contents">legislation.gov.uk</a>. יש בחוברת הצהרה שהיא לא ייעוץ משפטי או פיננסי, ואין בה הבטחות להכנסה. הגופנים (Fraunces, Inter, Instrument Serif) ברישיון OFL, שמתיר מכירה, והעיצוב כולו מקורי.</div>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(btn=>{
+  btn.addEventListener('click',async()=>{
+    const el=document.getElementById(btn.dataset.target);
+    const label=btn.textContent;
+    const done=()=>{btn.textContent='הועתק ✓';btn.classList.add('done');setTimeout(()=>{btn.textContent=label;btn.classList.remove('done')},1800)};
+    try{
+      if(btn.dataset.html && window.ClipboardItem && navigator.clipboard.write){
+        await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([el.innerHTML.trim()],{type:'text/html'}),'text/plain':new Blob([el.innerText.trim()],{type:'text/plain'})})]);
+      }else{
+        await navigator.clipboard.writeText(el.innerText.trim());
+      }
+      done();
+    }catch(e){
+      const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);
+      btn.textContent='הטקסט סומן, העתק ידנית';setTimeout(()=>{btn.textContent=label},2500);
+    }
+  });
+});
+try{document.querySelectorAll('.checks input').forEach(i=>{i.checked=localStorage.getItem(i.id)==='1';i.addEventListener('change',()=>{try{localStorage.setItem(i.id,i.checked?'1':'0')}catch(e){}})})}catch(e){}
+</script>
