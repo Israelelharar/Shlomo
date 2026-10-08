@@ -1,0 +1,1103 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>קורס קלוד קוד</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Rubik:wght@500;700;800&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: RTL course — lesson list at the start side on wide screens (collapsible on phones), one lesson at a time, progress bar on top, settings appendix outside the main track */
+:root{
+  --bg:#F6F7F9; --surface:#FFFFFF; --ink:#18212B; --muted:#5A6573; --line:#DCE1E7;
+  --accent:#B4530A; --on-accent:#FFFFFF; --accent-soft:#FBEBDD; --teal:#0E6E7A; --teal-soft:#E1F1F3;
+  --warn:#A8261B; --on-warn:#FFFFFF; --warn-soft:#FBE6E3; --ok:#2C6B37; --on-ok:#FFFFFF; --ok-soft:#E3F1E5; --on-muted:#FFFFFF;
+  --code-bg:#EEF1F4;
+  --f-display:"Rubik","Assistant","Segoe UI",Arial,sans-serif;
+  --f-body:"Assistant","Segoe UI",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",Consolas,"Courier New",monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#12171D; --surface:#1A2129; --ink:#E7ECF1; --muted:#9AA6B3; --line:#2C3641;
+  --accent:#F0A055; --on-accent:#1A1209; --accent-soft:#3A2A1B; --teal:#5CC3CF; --teal-soft:#16343A;
+  --warn:#F2877B; --on-warn:#1E0D0B; --warn-soft:#3B1F1C; --ok:#82C98E; --on-ok:#0F1D12; --ok-soft:#1C3322; --on-muted:#12171D; --code-bg:#222B35; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#12171D; --surface:#1A2129; --ink:#E7ECF1; --muted:#9AA6B3; --line:#2C3641;
+  --accent:#F0A055; --on-accent:#1A1209; --accent-soft:#3A2A1B; --teal:#5CC3CF; --teal-soft:#16343A;
+  --warn:#F2877B; --on-warn:#1E0D0B; --warn-soft:#3B1F1C; --ok:#82C98E; --on-ok:#0F1D12; --ok-soft:#1C3322; --on-muted:#12171D; --code-bg:#222B35; color-scheme:dark }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17.5px;line-height:1.7}
+.app{direction:rtl;max-width:1180px;margin:0 auto;padding:18px 16px 64px;display:grid;grid-template-columns:1fr;gap:20px}
+@media (min-width:1000px){ .app{grid-template-columns:270px minmax(0,1fr);column-gap:32px} }
+h1,h2,h3{font-family:var(--f-display);line-height:1.25;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,5vw,44px);font-weight:800}
+h2{font-size:clamp(25px,3.6vw,34px);font-weight:700}
+h3{font-size:19.5px;font-weight:700;margin-top:8px}
+h1:focus,h2:focus{outline:none}
+p,ul,ol{margin:0}
+a{color:var(--teal)}
+code{font-family:var(--f-mono);font-size:.9em;background:var(--code-bg);padding:1px 7px;border-radius:5px;direction:ltr;unicode-bidi:isolate}
+strong{font-weight:700}
+
+/* top bar */
+.topbar{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:3px solid var(--accent)}
+.brand{display:grid;gap:0}
+.brand a{font-family:var(--f-display);font-weight:800;font-size:22px;color:var(--ink);text-decoration:none}
+.brand span{font-size:14px;color:var(--muted)}
+.meter{display:grid;gap:6px;flex:1 1 260px;max-width:420px}
+.meter-txt{font-size:14.5px;color:var(--muted)}
+.meter-txt b{color:var(--ink)}
+.bar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px}
+.bar i{height:9px;border-radius:3px;background:var(--line)}
+.bar i.done{background:var(--ok)}
+.bar i.cur{outline:2px solid var(--accent);outline-offset:1px}
+
+/* lesson list */
+.side{align-self:start}
+@media (min-width:1000px){ .side{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto} }
+.side details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 12px}
+.side summary{font-family:var(--f-display);font-weight:700;cursor:pointer;padding-inline:4px}
+.part-name{font-family:var(--f-display);font-size:13.5px;font-weight:700;color:var(--muted);margin:14px 8px 4px}
+.side ol{list-style:none;padding:0;margin:0;display:grid;gap:2px}
+.side a{display:grid;grid-template-columns:24px 1fr;gap:9px;align-items:center;padding:6px 8px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:15.5px;line-height:1.35}
+.side a:hover,.side a:focus-visible{background:var(--accent-soft);outline:none}
+.side a[aria-current="page"]{background:var(--accent-soft);font-weight:700}
+.dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:11.5px;font-family:var(--f-mono);color:var(--muted);direction:ltr}
+.is-done .dot{background:var(--ok);border-color:var(--ok);color:var(--on-ok)}
+.dot.book{border-style:dashed}
+
+/* views */
+main{min-width:0}
+.view{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px clamp(16px,3.5vw,38px) 28px;display:grid;gap:16px}
+.l-meta{font-size:14.5px;color:var(--muted);font-weight:600}
+.l-meta .pn{color:var(--accent)}
+.new{display:inline-block;font-size:12.5px;font-weight:700;padding:1px 9px;border-radius:999px;background:var(--ok-soft);color:var(--ok);vertical-align:middle;margin-inline-start:6px}
+.goal{background:var(--accent-soft);border-radius:10px;padding:12px 16px;font-weight:600;max-width:72ch}
+.goal b{color:var(--accent)}
+.lead{color:var(--muted);max-width:68ch}
+.view ul,.view ol{padding-inline-start:1.3em;display:grid;gap:6px}
+.view li{max-width:72ch}
+.cols{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px;align-content:start}
+.tile h3{margin:0;font-size:17.5px}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:1px 9px;border-radius:999px;background:var(--teal-soft);color:var(--teal);justify-self:start}
+
+.note{border-radius:10px;padding:12px 14px;display:grid;gap:4px;border-inline-start:4px solid}
+.note b.lbl{font-family:var(--f-display);font-size:14.5px}
+.note.tip{background:var(--teal-soft);border-color:var(--teal)}
+.note.warn{background:var(--warn-soft);border-color:var(--warn)}
+.note.do{background:var(--ok-soft);border-color:var(--ok)}
+.note.key{background:var(--accent-soft);border-color:var(--accent)}
+.unv{font-size:12.5px;font-weight:700;color:var(--warn);border:1px solid var(--warn);border-radius:999px;padding:0 7px;white-space:nowrap}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:500px;font-size:15.5px}
+th,td{text-align:start;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-display);font-size:14.5px;background:var(--code-bg)}
+tr:last-child td{border-bottom:0}
+@media (max-width:560px){ table{min-width:0;font-size:14.5px} th,td{padding:8px 8px} }
+
+.steps{counter-reset:st;list-style:none;padding:0!important}
+.steps>li{counter-increment:st;display:grid;grid-template-columns:2em 1fr;gap:8px}
+.steps>li::before{content:counter(st);font-family:var(--f-display);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:50%;width:1.7em;height:1.7em;display:grid;place-items:center;font-size:14px}
+.check{list-style:none;padding:0!important}
+.check li{display:grid;grid-template-columns:1.4em 1fr;gap:6px}
+.check li::before{content:"□";color:var(--accent);font-weight:700}
+
+.prompt{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid}
+.prompt-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 12px;background:var(--code-bg);flex-wrap:wrap}
+.prompt-top b{font-family:var(--f-display);font-size:15px}
+.prompt pre{margin:0;padding:12px 14px;white-space:pre-wrap;font-family:var(--f-body);font-size:16px;line-height:1.65}
+button.copy{font:inherit;font-size:14px;font-weight:700;border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:8px;padding:3px 12px;cursor:pointer;min-height:32px}
+button.copy:hover{background:var(--accent-soft)}
+button.copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.cmdcell{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+details.more{border:1px dashed var(--line);border-radius:10px;padding:10px 14px}
+details.more>summary{cursor:pointer;font-family:var(--f-display);font-weight:700;color:var(--muted)}
+details.more[open]>summary{margin-bottom:10px}
+details.more>div{display:grid;gap:12px}
+
+dl.gloss{display:grid;gap:10px;margin:0}
+dl.gloss div{display:grid;grid-template-columns:minmax(110px,170px) 1fr;gap:10px;border-bottom:1px dashed var(--line);padding-bottom:8px}
+dl.gloss dt{font-weight:700;font-family:var(--f-display)}
+dl.gloss dd{margin:0}
+@media (max-width:520px){ dl.gloss div{grid-template-columns:1fr;gap:2px} }
+
+/* "check that I understood" */
+.quiz{border:2px solid var(--teal);border-radius:12px;padding:14px 16px;display:grid;gap:10px;background:var(--teal-soft)}
+.quiz .q b{font-family:var(--f-display);color:var(--teal)}
+.opts{display:grid;gap:8px}
+.opts button{font:inherit;font-size:16px;text-align:start;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 14px;cursor:pointer;min-height:44px}
+.opts button:hover{border-color:var(--teal)}
+.opts button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.opts button.right{border:2px solid var(--ok);background:var(--ok-soft);font-weight:700}
+.opts button.wrong{border:2px solid var(--warn);background:var(--warn-soft)}
+.qa{background:var(--surface);border-radius:8px;padding:10px 12px}
+.qa .verdict{font-family:var(--f-display)}
+
+/* self-check list */
+.selfcheck{list-style:none;padding:0!important;display:grid;gap:8px}
+.selfcheck label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.selfcheck input{width:22px;height:22px;margin-top:3px;accent-color:var(--ok);flex:none}
+
+/* settings cards */
+.set{border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:8px}
+.set-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.set-head h3{margin:0}
+.set-num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:15px;direction:ltr;flex:none}
+.set-num.g{background:var(--ok);color:var(--on-ok)}
+.set-num.x{background:var(--muted);color:var(--on-muted)}
+.set-num.r{background:var(--warn);color:var(--on-warn)}
+img.row{height:30px;width:auto;border:1px solid var(--line);border-radius:6px;background:#FAF9F7;flex:none}
+.pill{font-size:13px;font-weight:700;padding:2px 10px;border-radius:999px;margin-inline-start:auto}
+.pill.g{background:var(--ok-soft);color:var(--ok)}
+.pill.x{background:var(--code-bg);color:var(--muted)}
+.pill.r{background:var(--warn-soft);color:var(--warn)}
+figure.shot{margin:0;display:grid;gap:6px}
+figure.shot img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;display:block}
+figure.shot figcaption{font-size:14.5px;color:var(--muted)}
+
+/* lesson footer */
+.foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px;margin-top:4px}
+.foot .grp{display:flex;gap:10px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;font-size:16px;border-radius:10px;padding:8px 18px;cursor:pointer;border:2px solid var(--accent);background:transparent;color:var(--accent);min-height:44px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.btn:hover{background:var(--accent-soft)}
+.btn.primary{background:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.ghost{border-color:var(--line);color:var(--ink)}
+.btn.read.on{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.btn:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+
+/* home */
+.home .lead{font-size:18.5px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.parts{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.part{border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:8px;align-content:start}
+.part .pnum{font-family:var(--f-mono);font-size:13px;color:var(--accent);direction:ltr;justify-self:start}
+.part h3{margin:0}
+.part p{color:var(--muted);font-size:15.5px}
+.part ol{list-style:none;padding:0!important;gap:2px!important}
+.part a{display:grid;grid-template-columns:24px 1fr;gap:9px;align-items:center;padding:5px 6px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:15.5px;line-height:1.35}
+.part a:hover,.part a:focus-visible{background:var(--accent-soft);outline:none}
+.meta{font-size:14px;color:var(--muted)}
+
+@media (prefers-reduced-motion: reduce){ *{scroll-behavior:auto!important;transition:none!important} }
+@media print{
+  :root{--bg:#fff;--surface:#fff}
+  .side,.meter,.foot,.cta,button.copy{display:none!important}
+  .app{display:block;max-width:none;padding:0}
+  .topbar{border-bottom:0;padding:0}
+  #home[hidden], #appx[hidden], article.lesson[hidden]{display:grid!important}
+  .qa[hidden]{display:block!important}
+  .qa .verdict{display:none}
+  .view{border:0;padding:0;margin-top:18px}
+  article.lesson, #appx{break-before:page}
+  .tile,.note,.prompt,tr,.steps>li,.set,.quiz{break-inside:avoid}
+  details.more{border:0;padding:0}
+  body{font-size:12.5pt}
+}
+</style>
+
+<div class="app" lang="he">
+<header class="topbar">
+  <div class="brand"><a href="#home">קורס קלוד קוד</a><span>17 שיעורים קצרים, בעברית פשוטה</span></div>
+  <div class="meter" aria-live="polite">
+    <div class="meter-txt" id="meterTxt">קראת <b>0</b> מתוך 17 שיעורים</div>
+    <div class="bar" id="bar" aria-hidden="true"></div>
+  </div>
+</header>
+
+<nav class="side" aria-label="רשימת השיעורים">
+  <details id="navd" open>
+    <summary id="navSum">כל השיעורים</summary>
+    <div id="navList"></div>
+  </details>
+</nav>
+
+<main>
+
+<!-- HOME -->
+<section class="view home" id="home">
+  <h1 tabindex="-1">קורס קלוד קוד</h1>
+  <p class="lead">כל מה שצריך כדי לעבוד עם קלוד מהר ונכון, ב-17 שיעורים קצרים. כל שיעור בנוי אותו דבר: מה תקבל, מה עושים צעד אחר צעד, בקשה מוכנה להעתקה, טעות אחת שכדאי להכיר, ובסוף שאלה אחת לבדוק שהבנת.</p>
+  <div class="cta"><a class="btn primary" id="startBtn" href="#l1">להתחיל משיעור 1 ←</a></div>
+  <div class="note key">
+    <b class="lbl">חשוב לדעת</b>
+    <p>דברים שמשתנים עם הזמן (מחירים, תאריכים, כפתורים) מסומנים במילה <span class="unv">לבדוק</span>. אם המסך שלך נראה אחרת ממה שכתוב כאן, הצילום שלך חשוב יותר מהכתוב. שלח לי אותו, ואני אעדכן.</p>
+  </div>
+  <div class="parts" id="parts"></div>
+  <div class="note tip">
+    <b class="lbl">איך לומדים מהקורס</b>
+    <ul>
+      <li><strong>חלק 1</strong> קוראים לפי הסדר, ובסוף עושים תרגיל קטן לבד.</li>
+      <li><strong>חלקים 2 ו-3</strong> פותחים כשצריכים: לפני סרטון, לפני אתר, או כשמשהו תקוע.</li>
+      <li><strong>חלק 4</strong> הוא מבחן הנהיגה שלך, וההגדרות שחשוב להכיר.</li>
+      <li>בסוף כל שיעור לוחצים <strong>"סמן שקראתי"</strong>, והפס למעלה מתמלא. הדף זוכר איפה עצרת.</li>
+    </ul>
+  </div>
+  <p class="meta">עודכן: 5 באוקטובר 2026 · נבנה מ-450 סרטונים של 8 ערוצים ישראליים ומהמדריכים הרשמיים של אנתרופיק · נתקעת במסך באנגלית? <a href="#appx">מדריך ההגדרות המלא</a> · <a href="https://claude.ai/artifact/EKf8DrQymSBChYfC6Sbqtn">דף העזר הקצר</a></p>
+</section>
+
+<!-- ============ PART 1 ============ -->
+
+<article class="view lesson" id="l1" data-part="1" data-min="3" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">להתחיל כאן: 5 כללים</h2>
+  <p class="goal"><b>מה תקבל:</b> 5 הרגלים שעושים 80% מההבדל. אם תזכור רק את השיעור הזה, זה מספיק כדי לעבוד טוב.</p>
+  <ol class="steps">
+    <li><div><strong>תגיד מה המטרה ואיך נראה "סיימתי".</strong> לא "תעשה לי ריל", אלא "ריל של 30 שניות, לאורך, כתוביות בעברית, נגמר בלוגו".</div></li>
+    <li><div><strong>תוסיף את משפט הקסם:</strong> "תשאל אותי כל מה שאתה צריך כדי שזה יצא מושלם. אל תנחש."</div></li>
+    <li><div><strong>משימה גדולה? קודם תוכנית.</strong> "אל תבנה עדיין, תכין תוכנית". מאשרים, ורק אז בונים.</div></li>
+    <li><div><strong>נושא חדש = שיחה חדשה.</strong> שיחה על הרבה נושאים מבלבלת אותו, וגם גומרת את המכסה מהר.</div></li>
+    <li><div><strong>בודקים לפני שמאמינים.</strong> מספרים, מחירים ומקורות. קלוד כותב בביטחון גם כשהוא טועה.</div></li>
+  </ol>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: משימה גדולה, בצורה הנכונה</b><button class="copy" type="button">העתקה</button></div><pre>אני רוצה [מה]. זה בשביל [למי / למה].
+סיימת כש: [איך נראה מוכן].
+אל תבנה עדיין: תכין תוכנית קצרה בנקודות, ותשאל אותי כל מה שאתה צריך כדי שזה יצא מושלם.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>לכתוב בקשה של שלוש מילים ולצפות לתוצאה מושלמת. מה שלא אמרת, קלוד ממלא ב"ממוצע", ולכן התוצאה יוצאת גנרית.</p></div>
+  <details class="more"><summary>להרחבה: ללמוד עוד בחינם</summary><div>
+    <p>הקורס הבסיסי ב<a href="https://academy.claude.com/">אקדמיה הרשמית של אנתרופיק</a>, ו<a href="https://zero2claude.dev/">הקורס החינמי של איתי שמול</a>, שמתחיל מאפס מוחלט.</p>
+  </div></details>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> אתה רוצה סרטון חדש לשואו טיים. מה הכי נכון לכתוב?</p>
+    <div class="opts"><button type="button">א. "תעשה לי סרטון יפה"</button><button type="button">ב. "סרטון של 30 שניות, לאורך, עם כתוביות. אל תבנה עדיין: תשאל אותי שאלות ותכין תוכנית"</button><button type="button">ג. "תחשוב טוב ותעשה הכי טוב שאתה יכול"</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. יש בה מטרה ברורה, בקשה לשאול שאלות, ותוכנית לפני בנייה. שלושה מחמשת הכללים.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l2" data-part="1" data-min="2" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">איפה עובדים: שיחה, עוזר אישי או קלוד קוד</h2>
+  <p class="goal"><b>מה תקבל:</b> לדעת לאיזו לשונית באפליקציה ללכת עם כל משימה.</p>
+  <p>באפליקציה יש שלוש לשוניות. זה אותו "מוח", עם ידיים שונות.</p>
+  <div class="cols">
+    <div class="tile"><span class="tag">לשונית 1</span><h3>שיחה רגילה</h3><p>שאלות, כתיבה, רעיונות ותכנון. אין לה גישה לקבצים במחשב.</p><p><strong>לך:</strong> ניסוח פוסט, רעיון לסרטון, שאלה מהירה.</p></div>
+    <div class="tile"><span class="tag">לשונית 2</span><h3>העוזר האישי</h3><p>עובד על תיקייה במחשב, מתחבר לג'ימייל, ליומן ולדרייב, ומכין קבצים כמו אקסל ומצגת. מריץ משימות קבועות.</p><p><strong>לך:</strong> חשבוניות לאקסל, סיכום מיילים בבוקר.</p></div>
+    <div class="tile"><span class="tag">לשונית 3</span><h3>קלוד קוד</h3><p>הכי חזק. בונה אתרים, אפליקציות וסרטונים, ומתקין כלים כשצריך. עובד תמיד בתוך תיקייה שבוחרים.</p><p><strong>לך:</strong> עריכת וידאו, אתרים, כל עבודה "כבדה". כאן אנחנו עובדים.</p></div>
+  </div>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: לא בטוח איפה?</b><button class="copy" type="button">העתקה</button></div><pre>אני רוצה [משימה]. איפה הכי נכון לעשות את זה: בשיחה רגילה, בעוזר האישי או בקלוד קוד? ולמה?</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>לבקש בשיחה רגילה לערוך סרטון או לסדר תיקייה. לשיחה אין גישה למחשב, אז היא רק תסביר איך עושים, במקום לעשות.</p></div>
+  <details class="more"><summary>להרחבה: כמה זה עולה</summary><div>
+    <p>המנוי הבסיסי עולה 20 דולר לחודש, והגדול 100 או 200 דולר. המכסה מתמלאת מחדש כל כמה שעות, ויש גם תקרה שבועית. כמה נשאר רואים בהגדרות, בסעיף 5. <span class="unv">לבדוק</span></p>
+  </div></details>
+  <div class="quiz" data-answer="2">
+    <p class="q"><b>בדוק שהבנתי:</b> יש לך סרטון במחשב, ואתה רוצה שקלוד יערוך אותו. איפה עובדים?</p>
+    <div class="opts"><button type="button">א. בשיחה רגילה</button><button type="button">ב. בעוזר האישי</button><button type="button">ג. בקלוד קוד</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ג. עריכת וידאו היא עבודה כבדה על קבצים במחשב, וזה בדיוק התפקיד של קלוד קוד.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l3" data-part="1" data-min="3" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">המסך, הכפתורים ומצבי העבודה</h2>
+  <p class="goal"><b>מה תקבל:</b> להכיר את המסך, ולדעת כמה חופש לתת לקלוד לפעול בלי לשאול.</p>
+  <h3>המסך</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>איפה</th><th>מה זה</th><th>טיפ</th></tr></thead>
+    <tbody>
+      <tr><td>הצד</td><td>כל השיחות שלך</td><td>שלוש נקודות ליד שיחה: לשים בקבוצה ("שואו טיים", "אתרים"), לשנות שם, לנעוץ למעלה.</td></tr>
+      <tr><td>תיבת הכתיבה</td><td>כאן כותבים, ואפשר לגרור אליה קבצים וצילומי מסך</td><td>צילום מסך שווה פסקה: "תתקן את מה שרואים פה".</td></tr>
+      <tr><td>כפתור מצב העבודה</td><td>למטה, ליד תיבת הכתיבה. קובע כמה חופש יש לקלוד</td><td>לא מוצא? תכתוב לי, ואני מעביר.</td></tr>
+      <tr><td>בחירת המודל</td><td>גם למטה. "המוח" שעונה: אופוס, סונט או הייקו</td><td>משימה פשוטה = מודל קל, ונשאר יותר מכסה (שיעור 14).</td></tr>
+      <tr><td>הדפדפן של קלוד</td><td>קלוד פותח את מה שבנה, בודק ומצלם</td><td>אתה לא צריך לבדוק בעצמך.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>מצבי עבודה</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>מצב</th><th>מה קורה</th><th>מתי</th></tr></thead>
+    <tbody>
+      <tr><td><strong>תכנון</strong></td><td>רק חוקר ושואל. לא משנה כלום, ובסוף מציג תוכנית.</td><td>לפני משימה גדולה.</td></tr>
+      <tr><td><strong>ידני</strong></td><td>שואל אותך לפני כל פעולה.</td><td>כשמתקינים משהו חדש, או כשמשהו נחסם.</td></tr>
+      <tr><td><strong>אוטומטי</strong> ✓</td><td>עובד לבד. בודק נפרד עוצר רק פעולות מסוכנות.</td><td>ברירת המחדל שלך.</td></tr>
+      <tr><td><strong>בלי שום הגנה</strong> ✗</td><td>מאשר הכל בעיניים עצומות.</td><td><strong>אף פעם לא במחשב האישי.</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p>האפליקציה זוכרת את המצב שבחרת לכל תיקייה בנפרד. שיחה בתיקייה חדשה מתחילה במצב ידני.</p>
+  <div class="note do"><b class="lbl">מותקן אצלך</b><p><strong>שומר מחיקה:</strong> לפני כל פקודה שמוחקת קבצים, קלוד עוצר ושואל אותך, גם במצב אוטומטי.</p></div>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: תכנון לפני בנייה</b><button class="copy" type="button">העתקה</button></div><pre>אל תבנה עדיין. תקרא מה שצריך, תשאל אותי שאלות, ותציג תוכנית קצרה.
+רק אחרי שאני מאשר, בונים.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>להעביר למצב "בלי שום הגנה" כדי שלא ישאל כל הזמן. יש סיפורים אמיתיים על אנשים שאיבדו שנים של עבודה בפקודה אחת.</p></div>
+  <details class="more"><summary>להרחבה: מה עושים כשמשהו "נחסם"</summary><div>
+    <p>אם קלוד כותב שפעולה נחסמה על ידי מערכת האבטחה, זו ההגנה של המצב האוטומטי. אם אתה בטוח שזה בסדר, תכתוב לי <strong>"תעבור למצב ידני ותעשה את זה"</strong>. אני מעביר, ואתה מאשר כל צעד בלחיצה. בסוף חוזרים לאוטומטי.</p>
+  </div></details>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> קלוד כתב שפעולה "נחסמה". מה עושים?</p>
+    <div class="opts"><button type="button">א. עוברים למצב "בלי שום הגנה"</button><button type="button">ב. כותבים לו "תעבור למצב ידני ותעשה את זה", ומאשרים כל צעד</button><button type="button">ג. סוגרים את השיחה ומתחילים מחדש</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. במצב ידני אתה מאשר כל צעד בעצמך, וההגנה נשארת.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l4" data-part="1" data-min="3" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">איך מבקשים נכון</h2>
+  <p class="goal"><b>מה תקבל:</b> בקשה אחת טובה במקום חמישה סבבי תיקונים. מדברים עם קלוד כמו עם עובד חדש וחכם, שלא יודע עליך כלום.</p>
+  <h3>5 דברים שכדאי שיהיו בבקשה</h3>
+  <ol class="steps">
+    <li><div><strong>תפקיד:</strong> "אתה עורך וידאו של רילס לעסקים".</div></li>
+    <li><div><strong>רקע:</strong> למי זה, איזה עסק, מה הלקוח צריך.</div></li>
+    <li><div><strong>מטרה ו"סיימתי":</strong> מה רוצים ואיך נראה מוכן.</div></li>
+    <li><div><strong>חומרים:</strong> קבצים, קישורים, צילומי מסך, דוגמה שאהבת.</div></li>
+    <li><div><strong>מה לא:</strong> "בלי סגול, בלי אימוג'ים, בלי מוזיקה".</div></li>
+  </ol>
+  <h3>4 משפטים שמשנים את התוצאה</h3>
+  <ul>
+    <li><strong>"תשאל אותי כל מה שאתה צריך כדי שזה יצא מושלם."</strong></li>
+    <li><strong>"מה הנקודות העיוורות שלי?"</strong> לפני משימה חדשה.</li>
+    <li><strong>"תן 3 כיוונים שונים לגמרי, ותגיד באיזה אתה ממליץ ולמה."</strong> ככה מקבלים ביקורת אמיתית, ולא רק הסכמה.</li>
+    <li><strong>"תסמן מה לא הצלחת לאמת."</strong> לכל דבר עם מספרים או מקורות.</li>
+  </ul>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: התבנית המלאה</b><button class="copy" type="button">העתקה</button></div><pre>אתה [תפקיד].
+הרקע: [העסק, הלקוח, למה זה].
+המטרה: [מה אני רוצה]. סיימת כש: [איך נראה מוכן].
+מצרף: [קבצים / צילום מסך / דוגמה שאהבתי ומה אהבתי בה].
+אני לא רוצה: [מה לא].
+תשאל אותי כל מה שאתה צריך כדי שזה יצא מושלם.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>להאמין לכל מספר. קלוד ממציא לפעמים נתונים, מחקרים וציטוטים, ונשמע בטוח לגמרי. כל מספר שיוצא החוצה (פוסט, הצעת מחיר, לקוח) בודקים קודם.</p></div>
+  <details class="more"><summary>להרחבה: מה לא צריך לכתוב</summary><div>
+    <ul>
+      <li>"תעשה יפה": במקום זה, דוגמה של מה שאהבת.</li>
+      <li>"תחשוב טוב": המודלים החדשים כבר עושים את זה לבד.</li>
+      <li>לא להתחיל מחדש בכל טעות. מתקנים באותה שיחה: "זה לא נכון, תתקן ותראה לי שזה עובד".</li>
+    </ul>
+  </div></details>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> קלוד כתב לך מספר מרשים על השוק. מה עושים לפני שמפרסמים אותו?</p>
+    <div class="opts"><button type="button">א. מפרסמים. הוא תמיד צודק</button><button type="button">ב. מבקשים: "תסמן מה לא הצלחת לאמת, ומאיפה המספר"</button><button type="button">ג. מוחקים את המספר בלי לבדוק</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. קלוד יכול לטעות בביטחון מלא, אז קודם מבררים מאיפה המספר.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l5" data-part="1" data-min="2" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">זיכרון והוראות קבועות</h2>
+  <p class="goal"><b>מה תקבל:</b> קלוד שמכיר אותך משיחה לשיחה, בלי שתסביר הכל מחדש.</p>
+  <div class="cols">
+    <div class="tile"><span class="tag">קובץ ההוראות</span><h3>הוראות קבועות</h3><p>קובץ שקלוד קורא בתחילת כל שיחה, כמו דף קליטה לעובד חדש. אצלך יש אחד כללי (עברית פשוטה, תוכנית לפני בנייה, בטיחות) ואחד לסרטונים.</p></div>
+    <div class="tile"><span class="tag">זיכרון</span><h3>מה הוא זוכר לבד</h3><p>קלוד שומר הערות: מה אהבת, מה עבד, החלטות. אפשר להגיד "תזכור ש..." או "תשכח את...".</p></div>
+    <div class="tile"><span class="tag">פרויקט</span><h3>פרויקט בשיחה הרגילה</h3><p>מרחב קבוע עם הוראות וקבצים, כמו מחירון ודוגמאות. כל שיחה בתוכו כבר מכירה את העסק.</p></div>
+  </div>
+  <div class="note tip"><b class="lbl">הטריק של המקצוענים</b><p>כשקלוד טועה ואתה מתקן, תגיד לו גם לרשום את הכלל. ככה הוא משתפר עם הזמן. ואחרי סרטון שאהבת במיוחד: "תעדכן את העורך שלי".</p></div>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: לתקן פעם אחת, לתמיד</b><button class="copy" type="button">העתקה</button></div><pre>זו טעות שחוזרת: [מה קרה]. תתקן, ותרשום את הכלל הזה בהוראות הקבועות כדי שזה לא יקרה שוב.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>לשמור בזיכרון סיסמאות או פרטים של לקוחות. בזיכרון שמים רק העדפות והחלטות.</p></div>
+  <details class="more"><summary>להרחבה</summary><div>
+    <p><strong>קצר עדיף.</strong> מהנדס באנתרופיק מחק 80% מקובץ ההוראות שלו, והתוצאות השתפרו. תהליכים ארוכים שמים בסקילים (שיעור 11).</p>
+  </div></details>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> קלוד חוזר על אותה טעות בכל סרטון. מה הכי נכון?</p>
+    <div class="opts"><button type="button">א. לתקן אותה מחדש בכל פעם</button><button type="button">ב. לבקש שיתקן, ושירשום את הכלל בהוראות הקבועות</button><button type="button">ג. לעבור לשיחה חדשה</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. כלל שנרשם בהוראות הקבועות נקרא בכל שיחה, ולכן הטעות לא חוזרת.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l6" data-part="1" data-min="3" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">בטיחות ופרטיות</h2>
+  <p class="goal"><b>מה תקבל:</b> לעבוד בלי לחשוף לקוחות ובלי לאבד קבצים.</p>
+  <h3>פעם אחת: לכבות את האימון על השיחות שלך</h3>
+  <ol class="steps">
+    <li><div>נכנסים להגדרות (שיעור 17 מראה איך).</div></li>
+    <li><div>בתפריט בצד בוחרים את <strong>סעיף 3, פרטיות</strong>: השורה עם הציור של המגן.</div></li>
+    <li><div>מכבים את <strong>המתג השני מלמעלה</strong>, בצד ימין של החלון. הוא הופך מכחול לאפור.</div></li>
+  </ol>
+  <p>זו הגדרה של החשבון, אז פעם אחת מספיקה לכל המכשירים. <strong>דלוק:</strong> השיחות יכולות לשמש לאימון ונשמרות עד 5 שנים. <strong>כבוי:</strong> 30 יום. <span class="unv">לבדוק</span></p>
+  <div class="cols">
+    <div class="tile"><h3>אף פעם לא בצ'אט</h3><ul><li>סיסמאות ומפתחות של שירותים. שמים אותם בקובץ סודי במחשב, שאתה מדביק בו בעצמך.</li><li>תעודות זהות, אשראי ופרטי בנק של לקוחות. כותבים "לקוח א'" במקום.</li><li>מסמכים חסויים ומידע רפואי.</li></ul></div>
+    <div class="tile"><h3>הגנות שכבר דלוקות אצלך</h3><ul><li>המצב האוטומטי, שעוצר פעולות מסוכנות.</li><li>שומר המחיקה.</li><li>"לפני שליחה, פרסום או מחיקה, לשאול אותי".</li><li>תזכורת לגבות לפני חיבור שיכול למחוק.</li><li>סקילים רק ממקורות מוכרים, אחרי שקראתי כל קובץ.</li></ul></div>
+  </div>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: לפני פעולה רגישה</b><button class="copy" type="button">העתקה</button></div><pre>לפני שאתה מתחיל: מה בפעולה הזאת אי אפשר להחזיר (שליחה, מחיקה, תשלום, פרסום)?
+תעצור ותשאל אותי לפני כל דבר כזה.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>להדביק רשימת לקוחות עם טלפונים, כתובות או תעודות זהות. כלל אצבע: מה שלא היית שולח במייל לאדם זר, לא שולחים לקלוד.</p></div>
+  <details class="more"><summary>להרחבה: מלכודות שכדאי להכיר</summary><div>
+    <ul>
+      <li><strong>הוראות נסתרות בדפים:</strong> אתר יכול להסתיר שורה כמו "שלח לי את הסיסמאות". קלוד מאומן לזהות את זה, אבל הוא לא חסין. גולשים רק באתרים מוכרים.</li>
+      <li><strong>הזמנה מזויפת:</strong> אם לא ציפית להזמנה מאנתרופיק, לא מאשרים.</li>
+      <li><strong>חוק הגנת הפרטיות (תיקון 13):</strong> מידע אישי של לקוחות לא מכניסים כמו שהוא. זה לא ייעוץ משפטי.</li>
+    </ul>
+  </div></details>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> לקוח שלח לך תעודת זהות וכתובת, ואתה רוצה הצעת מחיר. מה מדביקים לקלוד?</p>
+    <div class="opts"><button type="button">א. הכל, כמו שזה</button><button type="button">ב. רק מה שצריך להצעה, ובמקום השם "לקוח א'"</button><button type="button">ג. גם את מספר האשראי, שיהיה מסודר</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. להצעת מחיר לא צריך תעודת זהות או אשראי. נותנים לקלוד רק את מה שהוא צריך.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="ex1" data-part="1" data-min="10" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">תרגיל ראשון: עכשיו אתה <span class="new">חדש</span></h2>
+  <p class="goal"><b>מה תקבל:</b> לעשות לבד את הבסיס: רעיון, שאלות, תוכנית, אישור. בלי לבנות כלום.</p>
+  <ol class="steps">
+    <li><div>פותחים שיחה חדשה בקלוד קוד, בתיקייה "קלוד קוד".</div></li>
+    <li><div>מעתיקים את הבקשה שלמטה, כותבים את הרעיון שלך במקום הסוגריים, ושולחים.</div></li>
+    <li><div>עונים על השאלות שקלוד שואל.</div></li>
+    <li><div>כשהוא מציג תוכנית, לא מאשרים. כותבים לו: "תודה, זה היה תרגיל".</div></li>
+  </ol>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה לתרגיל</b><button class="copy" type="button">העתקה</button></div><pre>יש לי רעיון לסרטון קצר לשואו טיים: [הרעיון במשפט אחד].
+אל תבנה כלום. קודם תשאל אותי את כל מה שאתה צריך, שאלה אחת בכל פעם.
+אחר כך תכין תוכנית קצרה בנקודות, ותחכה לאישור שלי.</pre></div>
+  <h3>בודקים את קלוד: 3 סימנים</h3>
+  <ul class="selfcheck">
+    <li><label><input type="checkbox"> הוא שאל אותי שאלות לפני שהתחיל.</label></li>
+    <li><label><input type="checkbox"> הוא הכין תוכנית לפני שבנה.</label></li>
+    <li><label><input type="checkbox"> הוא חיכה לאישור שלי, ולא בנה לבד.</label></li>
+  </ul>
+  <div class="note do"><b class="lbl">שלושה סימנים?</b><p>למדת את הבסיס. אם הוא דילג על שלב, כתוב לו: "עצור, לא ביקשתי לבנות. קודם שאלות ותוכנית". ותראה איך הוא מתקן.</p></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>לאשר תוכנית בלי לקרוא אותה. התוכנית היא המקום הכי זול לתקן: לפני שמשהו נבנה.</p></div>
+</article>
+
+<!-- ============ PART 2 ============ -->
+
+<article class="view lesson" id="l7" data-part="2" data-min="4" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">סרטון לעסק, צעד אחר צעד</h2>
+  <p class="goal"><b>מה תקבל:</b> מסרטון גולמי לריל מוכן, בתהליך קבוע שכבר מוגדר במחשב שלך, בתיקיית הסרטונים שבתוך "קלוד קוד".</p>
+  <ol class="steps">
+    <li><div><strong>תיקייה:</strong> מעתיקים את התיקייה <strong>"_תבנית_פרויקט"</strong>, נותנים לה שם, ושמים את הסרטון בתיקייה <strong>"01_חומרי_גלם"</strong>.</div></li>
+    <li><div><strong>היכרות:</strong> אני מתמלל, מוציא תמונות מהסרטון, ומראה לך מה ראיתי.</div></li>
+    <li><div><strong>בריף:</strong> למי, לאורך או לרוחב, כמה זמן, מטרה, סגנון. מה שחסר אני שואל.</div></li>
+    <li><div><strong>תוכנית לאישור:</strong> מה חותכים ואיפה נכנס כל אפקט. מחכים ל"כן".</div></li>
+    <li><div><strong>חלק אחרי חלק:</strong> אני עורך חלק אחד, עוצר, ומחכה ל"הבא".</div></li>
+    <li><div><strong>בדיקה ומוכן:</strong> "בודק הסרטונים" עובר על התמונה והסאונד לפני שאתה רואה. הסרטון הסופי נכנס לתיקייה <strong>"03_מוכן"</strong>.</div></li>
+  </ol>
+  <div class="note key"><b class="lbl">שואו טיים</b><p>סאונד רק מקבצים שאתה שם בתיקייה. בלי קריינות, מוזיקה או אפקטים שנוצרו בבינה מלאכותית. אין קובץ? הסרטון שקט.</p></div>
+  <h3>איזה כלי למה</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>רוצה</th><th>הכלי</th></tr></thead>
+    <tbody>
+      <tr><td>לערוך צילום אמיתי: חיתוכים, כתוביות, אפקטים</td><td>מערכת הסרטונים ו"העורך שלי"</td></tr>
+      <tr><td>אנימציה מאפס: פתיח, לוגו זז, כותרות</td><td>"מושן סטודיו" של אילון גרופר</td></tr>
+      <tr><td>מסרטון ארוך לריל</td><td>"תוציא ריל מהקטעים החזקים"</td></tr>
+      <tr><td>לנקות דיבור מרעש</td><td>הכלי של אדובי לשיפור דיבור (מחובר אצלך)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: סרטון חדש</b><button class="copy" type="button">העתקה</button></div><pre>בתיקייה [שם התיקייה] יש סרטון גולמי. תכין ממנו ריל של [30] שניות, לאורך, עם כתוביות בעברית, לפי העורך שלי.
+תתחיל בתמלול ותוכנית, ואל תערוך עד שאני מאשר.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>לבקש את כל העריכה בבת אחת. בסרטון ארוך עובדים חלק אחרי חלק, וככה כל תיקון קטן וזול.</p></div>
+  <details class="more"><summary>להרחבה: בריף, אור, סאונד וכתוביות</summary><div>
+    <p><strong>בריף לסרטון מותג:</strong> כמה זמן, כמה סצנות, מה הבעיה של הלקוח, מה אתם עושים, איך זה עובד ב-3 שלבים, ולוגו בסוף. מצרפים צבעים, לוגו וסרטון לדוגמה, עם הסבר מה אהבת בו. מצפים ל-3 עד 4 סבבי תיקון.</p>
+    <div class="cols">
+      <div class="tile"><h3>אור</h3><p>לכבות את אור התקרה. אור ראשי באלכסון מלמעלה. בטלפון: אף פעם לא חלון מאחוריך.</p></div>
+      <div class="tile"><h3>סאונד</h3><p>מיקרופון בחדר שקט. חומרים מעבירים בדרייב ולא בוואטסאפ, כי הוואטסאפ מוריד איכות.</p></div>
+      <div class="tile"><h3>כתוביות</h3><p>קצת מתחת לסנטר, ולא מתחת לכפתורים של טיקטוק ואינסטגרם.</p></div>
+    </div>
+    <p><strong>עוד בקשות מוכנות לסרטונים:</strong> בקובץ "ספריית בקשות וידאו", בתיקיית הסרטונים.</p>
+  </div></details>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> הסרטון ארוך, 3 דקות. איך עורכים אותו?</p>
+    <div class="opts"><button type="button">א. הכל בבת אחת, כדי לחסוך זמן</button><button type="button">ב. חלק אחרי חלק, ומחכים ל"הבא" אחרי כל חלק</button><button type="button">ג. רק את הסוף</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. כל חלק נבדק לפני שממשיכים, ולכן טעות מתגלה מוקדם, כשקל לתקן אותה.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l8" data-part="2" data-min="4" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">אתר, מהרעיון ועד האינטרנט</h2>
+  <p class="goal"><b>מה תקבל:</b> אתר שלא נראה כמו בינה מלאכותית, בדוק ומאובטח, עם כתובת אמיתית באינטרנט.</p>
+  <ol class="steps">
+    <li><div><strong>בריף:</strong> הסקיל "עיצוב בלי מראה בינה מלאכותית" שואל מה העסק, למי האתר ומה המטרה.</div></li>
+    <li><div><strong>כיוונים:</strong> "תראה לי 3–4 כיוונים שונים" לפני שבונים. אפשר לצרף אתר שאהבת, או ציור על נייר.</div></li>
+    <li><div><strong>מבנה שמוכר:</strong> כותרת שמבטיחה תוצאה, למי זה, 3 דברים שהלקוח מרוויח, תשובה להתנגדות הכי גדולה, וכפתור פעולה אחד.</div></li>
+    <li><div><strong>בנייה ובדיקה:</strong> אני בונה, פותח בדפדפן, ומצלם במחשב ובטלפון.</div></li>
+    <li><div><strong>בדיקת אבטחה:</strong> לפני כל העלאה לאינטרנט.</div></li>
+    <li><div><strong>לאינטרנט:</strong> שמירה בגיטהאב (אתר ששומר קוד, תמיד במצב פרטי), שירות שמעלה את האתר, וכתובת משלך. אני מלווה צעד צעד.</div></li>
+    <li><div><strong>חברים קודם:</strong> 10 אנשים שאתה מכיר בודקים לפני שמפרסמים.</div></li>
+  </ol>
+  <h3>לבדוק ולשפר אתר קיים</h3>
+  <p>הסקיל "אימפקבל" מותקן אצלך. הוא עובד רק כשמבקשים, ותמיד לפי כללי העיצוב שלך. כותבים לי במילים:</p>
+  <ul>
+    <li>"תעשה ביקורת עיצוב לאתר עם אימפקבל": ציון והערות.</li>
+    <li>"תעשה בדיקה טכנית לאתר": נגישות, מהירות, תצוגה בטלפון.</li>
+    <li>"תעשה ליטוש אחרון לפני העלאה".</li>
+  </ul>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: בדיקה לפני שאתר עולה</b><button class="copy" type="button">העתקה</button></div><pre>לפני שמעלים: תעשה בדיקת אבטחה ובדיקה של הפונקציות והעיצוב, במחשב ובטלפון.
+תסביר לי כל ממצא במילים פשוטות, ותתקן רק אחרי שאני מאשר.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>להעלות לאינטרנט בלי בדיקת אבטחה, או לשים מפתח של שירות בתוך הקוד. מפתח שעלה פעם לאינטרנט צריך להחליף.</p></div>
+  <details class="more"><summary>להרחבה: 8 הבדיקות לפני העלאה</summary><div>
+    <ul class="check">
+      <li>מפתחות של שירותים רק בשרת, אף פעם לא בקוד שהגולש רואה.</li>
+      <li>כל מה שהגולש מקליד נבדק ומנוקה.</li>
+      <li>הגבלה על כמות בקשות, כדי שרובוט לא יפיל את האתר.</li>
+      <li>כל משתמש רואה רק את המידע שלו.</li>
+      <li>איפוס סיסמה עם קישור חד-פעמי, ותמיד חיבור מאובטח (המנעול בדפדפן).</li>
+      <li>הודעות שגיאה כלליות לגולש.</li>
+      <li>יומן אירועים, כדי לדעת כשמשהו נשבר.</li>
+      <li>בחנות: לחיצה כפולה על "שלם" = חיוב אחד.</li>
+    </ul>
+    <p><strong>בונה אתרים פשוט או קלוד קוד?</strong> קודם בודקים אם כלי פשוט לבניית אתרים יכול לעשות את זה: שם אחסון, כתובת ותשלומים בלחיצה. קלוד קוד מתאים כשצריך משהו שהכלים הפשוטים לא יודעים, או שליטה מלאה.</p>
+  </div></details>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> האתר מוכן ונראה טוב. מה עושים לפני שמעלים אותו לאינטרנט?</p>
+    <div class="opts"><button type="button">א. מעלים מיד</button><button type="button">ב. בדיקת אבטחה, ובדיקה במחשב ובטלפון</button><button type="button">ג. שולחים קודם לכל הלקוחות</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. אתר שנראה טוב עוד לא אומר שהוא בטוח. בודקים לפני שהוא פתוח לכולם.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l9" data-part="2" data-min="3" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">אוטומציות לעסק</h2>
+  <p class="goal"><b>מה תקבל:</b> דברים שקורים לבד, כל יום, בלי שתבקש.</p>
+  <h3>הדוגמה הכי שימושית: סיכום בוקר</h3>
+  <ol class="steps">
+    <li><div>מחברים ג'ימייל ויומן גוגל (שיעור 12).</div></li>
+    <li><div>בעוזר האישי פותחים משימה מתוזמנת חדשה, ומדביקים את הבקשה המוכנה שלמטה. <span class="unv">לבדוק</span></div></li>
+    <li><div>בוחרים שעה, ומריצים פעם אחת עכשיו, כדי לאשר הרשאות. לא מוצא את הכפתורים? צילום מסך אליי.</div></li>
+  </ol>
+  <h3>רעיונות שעובדים</h3>
+  <div class="cols">
+    <div class="tile"><h3>הצעות מחיר</h3><p>מצרפים 2–3 הצעות קודמות: "תיצור סקיל להצעות מחיר כמו אלה".</p></div>
+    <div class="tile"><h3>חשבוניות</h3><p>תיקייה של קבלות → טבלת אקסל של ספק, סכום ותאריך.</p></div>
+    <div class="tile"><h3>מחקר מתחרים</h3><p>3 מתחרים → טבלת השוואה → "איפה הפער שאף אחד לא ממלא?".</p></div>
+    <div class="tile"><h3>הכנה לפגישה</h3><p>"תכין אותי לפגישות מחר: מה כתבנו במיילים, מה הלקוח ביקש".</p></div>
+  </div>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: סיכום בוקר</b><button class="copy" type="button">העתקה</button></div><pre>כל יום ב-07:00 תסכם לי: מה ביומן היום, אילו מיילים מחכים לתשובה שלי, מה דחוף, ולמי הבטחתי משהו.
+קצר, בעברית, בנקודות. אל תשלח שום דבר לאף אחד, רק לסכם.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>לתת לו לשלוח ללקוחות לבד מהיום הראשון. קודם הוא מציע, אחר כך מכין טיוטה ואתה מאשר, ורק בסוף רץ לבד.</p></div>
+  <details class="more"><summary>להרחבה: לבנות "עובד דיגיטלי" בלי סיכון</summary><div>
+    <ol class="steps">
+      <li><div><strong>משימה נכונה:</strong> חוזרת כל שבוע? אפשר לבדוק שהיא טובה? צריכה שיקול דעת? 3 פעמים כן = מתאימה.</div></li>
+      <li><div><strong>תפקיד אחד ותיקיית ידע</strong> עם מחירון, תנאים ומדיניות. בהוראות: "אל תמציא. תענה רק מהקבצים".</div></li>
+      <li><div><strong>עובדים יחד כמה ימים</strong>, ואז: "תסכם מה עשינו ותיצור סקילים של איך אני עובד".</div></li>
+      <li><div><strong>מבחן של 5 דקות:</strong> שאלה שאין עליה תשובה, לקוח כועס, ושאלה על משהו שהוא לא רואה.</div></li>
+    </ol>
+    <p>משימות בעוזר האישי רצות כשהמחשב דלוק. משימות בענן רצות גם כשהוא כבוי (שיעור 13). <span class="unv">לבדוק</span></p>
+  </div></details>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> בנית עוזר שעונה ללקוחות. מתי נותנים לו לשלוח לבד?</p>
+    <div class="opts"><button type="button">א. מהיום הראשון, זה כל הרעיון</button><button type="button">ב. רק אחרי תקופה של טיוטות שאתה מאשר, ובהתחלה על חלק קטן מהעבודה</button><button type="button">ג. אף פעם לא בודקים אותו</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. קודם בודקים שהוא באמת עונה טוב, ורק אז נותנים לו יותר חופש.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l10" data-part="2" data-min="3" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">סקילים: בקשה שחוזרת הופכת לכפתור</h2>
+  <p class="goal"><b>מה תקבל:</b> כותבים הוראות פעם אחת, ומאז מספיק משפט אחד.</p>
+  <p>סקיל הוא דף הוראות שמור, כמו מתכון. קלוד רואה רק את השם ואת התיאור הקצר של כל סקיל, ופותח אותו כשהבקשה שלך מתאימה. סקיל לא הופעל לבד? כותבים "תשתמש בסקיל [השם]".</p>
+  <h3>3 דרכים ליצור סקיל, בלי לכתוב כלום בעצמך</h3>
+  <ol class="steps">
+    <li><div><strong>מעבודה אמיתית</strong> (הכי טוב): עושים משימה עד הסוף, וכשהתוצאה טובה: "תהפוך את השיחה הזאת לסקיל".</div></li>
+    <li><div><strong>מראיון:</strong> "אני רוצה סקיל ל[הצעות מחיר]. תראיין אותי".</div></li>
+    <li><div><strong>מהקלטה:</strong> מקליטים את המסך תוך כדי עבודה ומסבירים בקול. <span class="unv">לבדוק</span></div></li>
+  </ol>
+  <h3>הסקילים שכבר יש לך</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>סקיל</th><th>מה הוא עושה</th></tr></thead>
+    <tbody>
+      <tr><td>"העורך שלי"</td><td>הסגנון שלך בסרטונים.</td></tr>
+      <tr><td>"מושן סטודיו"</td><td>אנימציה מאפס, בעברית.</td></tr>
+      <tr><td>מערכת הסרטונים</td><td>עריכת וידאו: כתוביות, אנימציות, מעברים.</td></tr>
+      <tr><td>"עיצוב בלי מראה בינה מלאכותית"</td><td>עיצוב אתרים. גובר על כל סקילי העיצוב האחרים.</td></tr>
+      <tr><td>"אימפקבל"</td><td>ביקורת וליטוש של אתר (שיעור 9).</td></tr>
+      <tr><td>סקילים של אמיל ו"טייסט"</td><td>ליטוש, תנועה קטנה באתר, כיווני עיצוב.</td></tr>
+      <tr><td>הכלים הרשמיים של אנתרופיק</td><td>בניית סקילים, עיצוב, בדיקת אבטחה.</td></tr>
+      <tr><td>"סדר"</td><td>סידור המחשב בלי למחוק כלום.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: סקיל מעבודה שהצליחה</b><button class="copy" type="button">העתקה</button></div><pre>התוצאה מעולה. לפני שנסגור: מה אולי פספסתי?
+אחר כך תהפוך את כל השיחה הזאת לסקיל, עם תיאור שמכיל את המילים שאני כותב כשאני מבקש את זה.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>להתקין סקיל מהאינטרנט כי יש לו הרבה הורדות. סקיל רץ עם הגישה שלך למחשב, וחוקרים מצאו מאות סקילים זדוניים. אצלך: רק אחרי שאני קורא כל קובץ.</p></div>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> מצאת באינטרנט סקיל עם 50 אלף הורדות. מה עושים?</p>
+    <div class="opts"><button type="button">א. מתקינים. אם כולם הורידו, הוא בטוח</button><button type="button">ב. שולחים לקלוד שיקרא כל קובץ לפני שמתקינים</button><button type="button">ג. מתקינים, ואם יש בעיה מוחקים</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. מספר ההורדות לא מוכיח כלום. סקיל זדוני יכול להזיק כבר בהפעלה הראשונה.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l11" data-part="2" data-min="2" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">חיבורים לכלים</h2>
+  <p class="goal"><b>מה תקבל:</b> גישה של קלוד לג'ימייל, ליומן, לדרייב ולקנבה, בדרך הבטוחה: דרך החשבון שלך, אף פעם לא דרך סיסמה בצ'אט.</p>
+  <ol class="steps">
+    <li><div>נכנסים להגדרות, <strong>סעיף 18, חיבורים לכלים</strong>.</div></li>
+    <li><div>לוחצים על כפתור הפלוס, מחפשים את הכלי, ולוחצים על כפתור החיבור.</div></li>
+    <li><div>מתחברים בחלון שנפתח, ובוחרים לכל פעולה: מותרת, באישור או חסומה. נתקעת? צילום מסך אליי.</div></li>
+  </ol>
+  <div class="cols">
+    <div class="tile"><h3>כבר מחוברים אצלך</h3><p>קנבה, פיגמה ואדובי.</p></div>
+    <div class="tile"><h3>שווה לשקול</h3><ul><li>ג'ימייל ויומן גוגל: סיכום בוקר, הכנה לפגישות.</li><li>דרייב: לקרוא ולסדר קבצים.</li><li>מטא: דוחות של הפרסומות. <span class="unv">לבדוק</span></li></ul></div>
+  </div>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: לחבר כלי</b><button class="copy" type="button">העתקה</button></div><pre>אני רוצה לחבר את [ג'ימייל]. תזכיר לי לגבות קודם, ותסביר לי צעד אחר צעד איפה ללחוץ.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>לחבר הכל "ליתר ביטחון". כל חיבור תופס מקום בכל שיחה, וחיבור שיכול למחוק הוא סיכון. מחברים רק מה שצריך, ופעולה שאי אפשר להחזיר תמיד באישור שלך.</p></div>
+  <div class="quiz" data-answer="0">
+    <p class="q"><b>בדוק שהבנתי:</b> אתה רוצה לחבר את ג'ימייל. מה עושים קודם?</p>
+    <div class="opts"><button type="button">א. גיבוי, ואז חיבור רק עם ההרשאות שצריך</button><button type="button">ב. מחברים עם כל ההרשאות, שיהיה</button><button type="button">ג. כותבים לקלוד את הסיסמה</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: א. חיבור שיכול לשלוח ולמחוק דורש גיבוי והרשאות מצומצמות. וסיסמה אף פעם לא כותבים בצ'אט.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l12" data-part="2" data-min="4" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">מהטלפון ומהענן, והקרדיט החינמי</h2>
+  <p class="goal"><b>מה תקבל:</b> לעבוד גם כשאתה לא ליד המחשב, ולנצל קרדיט שמקבלים חינם.</p>
+  <h3>שתי דרכים לעבוד מרחוק</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>שליטה מרחוק</th><th>עבודה בענן</th></tr></thead>
+    <tbody>
+      <tr><td>איפה קלוד עובד</td><td>במחשב שלך</td><td>במחשב של אנתרופיק</td></tr>
+      <tr><td>המחשב צריך להיות דלוק?</td><td>כן</td><td>לא</td></tr>
+      <tr><td>רואה את הקבצים במחשב?</td><td>כן</td><td>לא. רק פרויקטים ששמורים בגיטהאב</td></tr>
+      <tr><td>מתאים בשבילך</td><td>לסרטונים, ולכל מה שבמחשב</td><td>לאתר של איזלו דיימונד, ולעבודה כבדה בלי להעמיס על המחשב</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>מה זה גיטהאב:</strong> אתר ששומר קוד באינטרנט, כמו דרייב לקוד. האתר של איזלו דיימונד כבר שמור שם.</p>
+  <h3>הקרדיט: לקבל אותו פעם אחת <span class="unv">לבדוק</span></h3>
+  <ol class="steps">
+    <li><div>מעתיקים את הפקודה בכפתור, ושולחים אותה לקלוד בחלון הזה כמו הודעה רגילה: <span class="cmdcell"><code>/claim-credit</code><button class="copy" type="button" data-copy="/claim-credit">העתקה</button></span></div></li>
+    <li><div>לא עבד? נכנסים בדפדפן ל<a href="https://claude.ai/code">אתר של קלוד קוד</a>, ומחפשים את ההודעה על הקרדיט.</div></li>
+    <li><div>אם מבקשים לחבר את גיטהאב: מתחברים בחלון של גיטהאב עצמו. הסיסמה רק שם, אף פעם לא בצ'אט.</div></li>
+  </ol>
+  <h3>להשתמש בו</h3>
+  <ol class="steps">
+    <li><div>בטלפון: באפליקציה של קלוד, הלשונית של קלוד קוד. במחשב: האתר של קלוד קוד בדפדפן.</div></li>
+    <li><div>בוחרים את הפרויקט של האתר.</div></li>
+    <li><div>כותבים בקשה כרגיל, ואפשר לסגור את הטלפון. קלוד ממשיך לעבוד.</div></li>
+    <li><div>כשהוא מסיים, בודקים מה הוא שינה. בדרך כלל השינויים נשמרים בצד, ונכנסים לאתר האמיתי רק אחרי שאתה מאשר.</div></li>
+  </ol>
+  <div class="note do"><b class="lbl">כסף</b><p>אין חיוב נוסף. במנוי הבסיסי מקבלים 100 דולר, ובמנוי הגדול 250 דולר. צריך לבקש עד 7 באוקטובר, והקרדיט בתוקף עד 4 בנובמבר. אחרי זה, עבודה בענן יורדת מהמכסה הרגילה. <span class="unv">לבדוק</span></p></div>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: משימה ראשונה בענן</b><button class="copy" type="button">העתקה</button></div><pre>תעבור על האתר בפרויקט הזה: מהירות, תצוגה בטלפון, נגישות וטעויות כתיב.
+תכין רשימת תיקונים מסודרת לפי חשיבות, ואל תשנה כלום עד שאני מאשר.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>לבקש בענן לערוך סרטון של שואו טיים. הענן לא רואה את המחשב שלך, אז סרטונים עושים רק כאן, במחשב.</p></div>
+  <details class="more"><summary>להרחבה: עוד דרכים מהטלפון</summary><div>
+    <ul>
+      <li><strong>התראות:</strong> קלוד שולח התראה לטלפון כשהוא מסיים, צריך אישור, או נתקע.</li>
+      <li><strong>משימה מהטלפון לעוזר האישי:</strong> שולחים משימה מהטלפון, וכשמגיעים למחשב היא מחכה. <span class="unv">לבדוק</span></li>
+    </ul>
+  </div></details>
+  <div class="quiz" data-answer="1">
+    <p class="q"><b>בדוק שהבנתי:</b> אתה בחוץ, ורוצה שקלוד יערוך סרטון שנמצא במחשב. מה נכון?</p>
+    <div class="opts"><button type="button">א. עבודה בענן</button><button type="button">ב. שליטה מרחוק מהטלפון, כשהמחשב נשאר דלוק</button><button type="button">ג. אי אפשר בכלל</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: ב. הענן לא רואה את המחשב שלך. בשליטה מרחוק קלוד עובד על המחשב עצמו.</p>
+  </div>
+</article>
+
+<!-- ============ PART 3 ============ -->
+
+<article class="view lesson" id="l13" data-part="3" data-min="3" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">משהו לא עובד? ואיך המכסה מחזיקה יותר</h2>
+  <p class="goal"><b>מה תקבל:</b> פתרון מהיר לתקלות הנפוצות, ופחות "נגמרה לי המכסה".</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>מה קורה</th><th>מה עושים</th></tr></thead>
+    <tbody>
+      <tr><td>הופיע כרטיס או כפתור שלא הבנתי</td><td>לא לוחצים. כותבים לי "לא הבנתי מה זה", ואני מסביר או עושה בעצמי.</td></tr>
+      <tr><td>מסך באנגלית שלא הבנתי</td><td>צילום מסך אליי. אני מסמן עליו בעברית.</td></tr>
+      <tr><td>"נחסם על ידי מערכת האבטחה"</td><td>"תעבור למצב ידני ותעשה את זה", ואתה מאשר כל צעד.</td></tr>
+      <tr><td>קלוד אומר "אני לא יכול"</td><td>לא תמיד נכון. "תנסה" או "יש דרך אחרת?".</td></tr>
+      <tr><td>שוכח מה סיכמנו</td><td>השיחה התמלאה. "תסכם את השיחה", או שיחה חדשה עם סיכום קצר.</td></tr>
+      <tr><td>נגמרה המכסה</td><td>לחכות שתתמלא מחדש, ולעבור למודל קל יותר. הטיפים למטה.</td></tr>
+      <tr><td>העיצוב יוצא "כמו בינה מלאכותית"</td><td>לבקש 3–4 כיוונים, לצרף דוגמה שאהבת, ולהגיד מה <strong>לא</strong>.</td></tr>
+      <tr><td>המציא מספר או מקור</td><td>"תסמן מה לא אימתת, ומאיפה כל נתון".</td></tr>
+      <tr><td>מסכים איתי על כל דבר</td><td>"תן 3 חלופות ותבקר את הרעיון שלי".</td></tr>
+      <tr><td>המחשב נתקע</td><td>עבודה כבדה אחת בכל פעם. כבר כלל קבוע אצלך.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>שהמכסה תחזיק יותר</h3>
+  <p><strong>מכסה</strong> היא כמות העבודה שקלוד מאפשר לך לעשות לפני שהוא מגביל אותך. היא מתמלאת מחדש כל כמה שעות, ויש גם תקרה שבועית. <span class="unv">לבדוק</span></p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>מודל</th><th>אופי</th><th>למה</th></tr></thead>
+    <tbody>
+      <tr><td><strong>אופוס</strong></td><td>הכי חכם, ואוכל הכי הרבה מכסה</td><td>תכנון, תקלות קשות, עריכה מורכבת.</td></tr>
+      <tr><td><strong>סונט</strong></td><td>כמעט כמו אופוס, וחוסך הרבה</td><td>רוב העבודה היומיומית.</td></tr>
+      <tr><td><strong>הייקו</strong></td><td>הכי מהיר וחסכוני</td><td>דברים קטנים מאוד.</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>מתכננים עם אופוס, מבצעים עם סונט.</strong></li>
+    <li><strong>בוחרים מודל בתחילת השיחה.</strong> החלפה באמצע עולה ביוקר.</li>
+    <li><strong>משימה אחת לשיחה.</strong> נושא חדש = שיחה חדשה.</li>
+    <li><strong>כמה נשאר?</strong> בהגדרות, סעיף 5.</li>
+  </ul>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה: לא הבנתי</b><button class="copy" type="button">העתקה</button></div><pre>לא הבנתי. תסביר שוב במשפטים קצרים, בלי מילים טכניות ובלי אנגלית, ועם דוגמה מהעסק שלי.</pre></div>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>להתחיל שיחה חדשה בכל טעות. מתקנים באותה שיחה: "זה לא נכון, תתקן ותראה לי שזה עובד". שיחה חדשה רק כשהנושא משתנה.</p></div>
+  <div class="quiz" data-answer="0">
+    <p class="q"><b>בדוק שהבנתי:</b> בשיחה ארוכה מאוד, קלוד "שכח" מה סיכמתם בהתחלה. מה עושים?</p>
+    <div class="opts"><button type="button">א. מבקשים סיכום קצר, ופותחים איתו שיחה חדשה</button><button type="button">ב. כותבים את הכל שוב ושוב</button><button type="button">ג. מחליפים מודל באמצע</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: א. שיחה ארוכה מדי מתמלאת. סיכום קצר בשיחה חדשה נותן לקלוד דף נקי, עם כל מה שחשוב.</p>
+  </div>
+</article>
+
+<article class="view lesson" id="l14" data-part="3" data-min="5" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">ארגז כלים: בקשות מוכנות ומילים</h2>
+  <p class="goal"><b>מה תקבל:</b> כל מה שמעתיקים או מחפשים, במקום אחד. לא צריך לקרוא הכל, רק לחזור לכאן כשצריך.</p>
+
+  <h3>בקשות מוכנות להעתקה</h3>
+  <p class="lead">ממלאים את מה שבסוגריים המרובעים.</p>
+  <div class="prompt"><div class="prompt-top"><b>סיכום לשיחה חדשה</b><button class="copy" type="button">העתקה</button></div><pre>השיחה התארכה. תכתוב לי סיכום קצר להדבקה בשיחה חדשה: מה המטרה, מה הוחלט, מה כבר נעשה (עם שמות הקבצים), ומה הצעד הבא.</pre></div>
+  <div class="prompt"><div class="prompt-top"><b>סקיל להצעות מחיר</b><button class="copy" type="button">העתקה</button></div><pre>בתיקייה יש [2–3] הצעות מחיר ששלחתי. תיצור סקיל שמכין הצעות מחיר כמו אלה: אותו מבנה, אותו טון, אותו עיצוב.
+תשאל אותי מה שחסר (מחירון, תנאים, מה אסור להבטיח). בסוף תראה לי הצעה לדוגמה.</pre></div>
+  <div class="prompt"><div class="prompt-top"><b>מחקר מתחרים</b><button class="copy" type="button">העתקה</button></div><pre>אלה 3 המתחרים שלי: [שמות + אתרים].
+תבנה טבלת השוואה: מה כל אחד מציע, מחירים (אם מפורסמים), למי הוא פונה, ומה ההבטחה השיווקית שלו.
+ואז: איפה יש פער שאף אחד לא ממלא? תסמן כל נתון שלא הצלחת לאמת.</pre></div>
+  <div class="prompt"><div class="prompt-top"><b>הצעה ברורה לעסק</b><button class="copy" type="button">העתקה</button></div><pre>תשאל אותי 3 שאלות, אחת בכל פעם: למי בדיוק השירות שלי מתאים, מה משתנה אצלו אחרי שהוא עובד איתי, ולמה אני ולא המתחרה.
+מהתשובות תכתוב לי משפט פתיחה לאתר ופסקת מכירה קצרה.</pre></div>
+  <div class="prompt"><div class="prompt-top"><b>סיפור לקוח לפוסט</b><button class="copy" type="button">העתקה</button></div><pre>זו הודעה שקיבלתי מלקוח: [הדבקה]. הרקע: [מי הוא, מה עשינו, מה הייתה הבעיה].
+תכתוב פוסט קצר לאינסטגרם: בעיה, פתרון, תוצאה, בקול שלי. רק מה שקרה באמת.</pre></div>
+  <div class="prompt"><div class="prompt-top"><b>מסך שלא הבנתי</b><button class="copy" type="button">העתקה</button></div><pre>אני שולח לך צילום של מסך. תסמן לי עליו בעברית מה כל דבר, ועל מה ללחוץ. בלי מילים באנגלית.</pre></div>
+  <div class="prompt"><div class="prompt-top"><b>ללמוד ממה שקלוד עשה</b><button class="copy" type="button">העתקה</button></div><pre>תסביר לי בעברית פשוטה מה עשית עכשיו ולמה.
+ואם אפשר, תכין לי עמוד קצר עם ציור שמראה את התהליך, ושאלה אחת בסוף לבדוק שהבנתי.</pre></div>
+
+  <h3>5 מילים שכדאי להכיר</h3>
+  <dl class="gloss">
+    <div><dt>סקיל</dt><dd>דף הוראות שמור למשימה שחוזרת על עצמה.</dd></div>
+    <div><dt>מכסה</dt><dd>כמות העבודה שקלוד מאפשר לך לעשות לפני שהוא מגביל אותך.</dd></div>
+    <div><dt>הוראות קבועות</dt><dd>קובץ שקלוד קורא בתחילת כל שיחה, כדי לדעת איך לעבוד איתך.</dd></div>
+    <div><dt>חיבור</dt><dd>"שקע" שמחבר את קלוד לכלי כמו ג'ימייל או קנבה, בצורה בטוחה.</dd></div>
+    <div><dt>עבודה בענן</dt><dd>קלוד עובד על המחשב של אנתרופיק, גם כשהמחשב שלך כבוי.</dd></div>
+  </dl>
+  <details class="more"><summary>להרחבה: מילים שלא צריך לזכור</summary><div>
+    <dl class="gloss">
+      <div><dt>מודל</dt><dd>ה"מוח" שעונה: אופוס, סונט או הייקו.</dd></div>
+      <div><dt>הקשר</dt><dd>כל מה שקלוד יכול לראות ולזכור בתוך השיחה הנוכחית.</dd></div>
+      <div><dt>סוכן</dt><dd>קלוד שקיבל משימה, וממשיך לעבוד עליה לבד עד שיש תוצאה.</dd></div>
+      <div><dt>תת-סוכן</dt><dd>עוזר שקלוד שולח למשימה צדדית, והוא חוזר רק עם התשובה. למשל "בודק הסרטונים".</dd></div>
+      <div><dt>כלל אוטומטי</dt><dd>כלל שרץ תמיד, בלי שיקול דעת. למשל "שומר המחיקה".</dd></div>
+      <div><dt>עמוד מפורסם</dt><dd>דף אינטרנט שקלוד מפרסם, כמו הקורס הזה. פרטי: רק אתה רואה אותו.</dd></div>
+      <div><dt>גיטהאב</dt><dd>אתר ששומר קוד וגרסאות, כמו דרייב לקוד. לעסק תמיד במצב פרטי.</dd></div>
+      <div><dt>כתובת אתר</dt><dd>השם של האתר באינטרנט, זה שכותבים בשורת הכתובת.</dd></div>
+      <div><dt>קובץ סודי</dt><dd>קובץ במחשב לסיסמאות של שירותים. לא עולה לאינטרנט.</dd></div>
+      <div><dt>שליטה מרחוק</dt><dd>שליטה מהטלפון בשיחה שרצה במחשב.</dd></div>
+      <div><dt>מערכת הסרטונים</dt><dd>הכלי שהופך עמוד אינטרנט לסרטון. המנוע של עריכת הסרטונים שלך.</dd></div>
+    </dl>
+  </div></details>
+
+  <details class="more"><summary>להרחבה: פקודות קצרות (לא חובה, אפשר לבקש במילים)</summary><div>
+    <p>את כל אלה אפשר גם לבקש ממני במילים. אם רוצים, מעתיקים בכפתור ושולחים כמו הודעה רגילה.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>מה רוצים</th><th>הפקודה</th></tr></thead>
+      <tbody>
+        <tr><td>דף נקי בין נושאים (הכי חוסך מכסה)</td><td><span class="cmdcell"><code>/clear</code><button class="copy" type="button" data-copy="/clear">העתקה</button></span></td></tr>
+        <tr><td>לסכם שיחה ארוכה ולהמשיך מהסיכום</td><td><span class="cmdcell"><code>/compact</code><button class="copy" type="button" data-copy="/compact">העתקה</button></span></td></tr>
+        <tr><td>לראות כמה מכסה נשארה</td><td><span class="cmdcell"><code>/usage</code><button class="copy" type="button" data-copy="/usage">העתקה</button></span></td></tr>
+        <tr><td>שאלה צדדית בלי לעצור את העבודה</td><td><span class="cmdcell"><code>/btw</code><button class="copy" type="button" data-copy="/btw ">העתקה</button></span></td></tr>
+        <tr><td>בדיקת אבטחה לפני העלאת אתר</td><td><span class="cmdcell"><code>/security-review</code><button class="copy" type="button" data-copy="/security-review">העתקה</button></span></td></tr>
+      </tbody>
+    </table></div>
+  </div></details>
+  <div class="quiz" data-answer="0">
+    <p class="q"><b>בדוק שהבנתי:</b> מה זה "מכסה"?</p>
+    <div class="opts"><button type="button">א. כמות העבודה שקלוד מאפשר לך לעשות לפני שהוא מגביל אותך</button><button type="button">ב. מקום לשמירת קבצים</button><button type="button">ג. המחיר של המנוי</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: א. המכסה מתמלאת מחדש כל כמה שעות, ובהגדרות, בסעיף 5, רואים כמה נשאר.</p>
+  </div>
+</article>
+
+<!-- ============ PART 4 ============ -->
+
+<article class="view lesson" id="final" data-part="4" data-min="30" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">מבחן הנהיגה שלך <span class="new">חדש</span></h2>
+  <p class="goal"><b>מה תקבל:</b> משימה אמיתית אחת מההתחלה עד הסוף, עם כל מה שלמדת. אם הצלחת, אתה יודע לעבוד עם קלוד.</p>
+  <ol class="steps">
+    <li><div>בוחרים סרטון גולמי אמיתי של שואו טיים, ושמים אותו בתיקיית פרויקט חדשה (שיעור 8).</div></li>
+    <li><div>מעתיקים את הבקשה שלמטה, ממלאים את הסוגריים, ושולחים.</div></li>
+    <li><div>עונים על השאלות של קלוד.</div></li>
+    <li><div>קוראים את התוכנית, משנים מה שצריך, ומאשרים.</div></li>
+    <li><div>מאשרים חלק אחרי חלק, עם המילה "הבא".</div></li>
+    <li><div>בודקים את התוצאה: הקול שלך מוביל? הכתוביות לא חתוכות? אין סאונד שלא הבאת?</div></li>
+    <li><div>אהבת? כותבים "תעדכן את העורך שלי", וקלוד שומר את הטעם שלך לפעם הבאה.</div></li>
+  </ol>
+  <div class="prompt"><div class="prompt-top"><b>בקשה מוכנה למבחן</b><button class="copy" type="button">העתקה</button></div><pre>בתיקייה [שם התיקייה] יש סרטון גולמי. אני רוצה ממנו ריל של [30] שניות לאינסטגרם, לפי העורך שלי.
+קודם תשאל אותי כל מה שאתה צריך, שאלה אחת בכל פעם. אחר כך תכין תוכנית קצרה ותחכה לאישור.
+אחרי האישור תערוך חלק אחרי חלק, ותעצור אחרי כל חלק עד שאכתוב "הבא".
+בסוף תבדוק את עצמך (קול, כתוביות, מסגרת) ותגיד לי מה בדקת.</pre></div>
+  <h3>עברת אם:</h3>
+  <ul class="selfcheck">
+    <li><label><input type="checkbox"> קלוד שאל שאלות לפני שהתחיל.</label></li>
+    <li><label><input type="checkbox"> הוא הכין תוכנית, וחיכה לאישור.</label></li>
+    <li><label><input type="checkbox"> הוא עבד חלק אחרי חלק, וחיכה ל"הבא".</label></li>
+    <li><label><input type="checkbox"> הוא בדק את עצמו לפני שהראה לך.</label></li>
+    <li><label><input type="checkbox"> בתוצאה הקול שלך מוביל, ואין סאונד שלא הבאת.</label></li>
+    <li><label><input type="checkbox"> שמרת את מה שאהבת ב"עורך שלי".</label></li>
+  </ul>
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>לוותר באמצע כי חלק אחד לא יצא טוב. מתקנים רק את החלק הזה, למשל: "בחלק 2 הכתובית מכסה את הפנים, תתקן". ואז ממשיכים.</p></div>
+</article>
+
+<article class="view lesson" id="set" data-part="4" data-min="5" hidden>
+  <p class="l-meta"></p>
+  <h2 tabindex="-1">ההגדרות שחשוב להכיר</h2>
+  <p class="goal"><b>מה תקבל:</b> 8 דברים בהגדרות שכדאי להכיר. את כל השאר אפשר להשאיר כמו שהוא.</p>
+  <div class="note tip"><b class="lbl">למה יש פה מספרים ותמונות</b><p>האפליקציה כתובה באנגלית, ואין לה גרסה בעברית. לכן לכל שורה בתפריט יש מספר, ותמונה של איך השורה נראית אצלך במסך. נתקעת? צילום מסך אליי, ואני מסמן עליו בעברית.</p></div>
+  <h3>איך נכנסים</h3>
+  <ol class="steps">
+    <li><div>בפינה השמאלית למטה של האפליקציה רואים את השם שלך. לוחצים עליו.</div></li>
+    <li><div>בתפריט שנפתח בוחרים בשורה של ההגדרות. <span class="unv">לבדוק</span></div></li>
+    <li><div>נפתח חלון, ובצד שמאל שלו יש רשימה של 20 שורות. התמונה של כל הרשימה נמצאת ב<a href="#appx">מדריך ההגדרות המלא</a>.</div></li>
+  </ol>
+
+  <div class="set"><div class="set-head"><span class="set-num g">3</span><img class="row" src="img/row03.png" alt="השורה של סעיף 3" width="176" height="28"><h3>פרטיות</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה לעשות:</strong> לכבות את המתג השני מלמעלה, כמו בתמונה. אחרי זה השיחות שלך לא משמשות לאימון.</p>
+    <figure class="shot"><img src="img/privacy.png" alt="עמוד הפרטיות, עם עיגול אדום סביב המתג שצריך לכבות" width="1333" height="970" loading="lazy"><figcaption>לוחצים על המתג שבעיגול האדום. הוא צריך להפוך לאפור.</figcaption></figure></div>
+
+  <div class="set"><div class="set-head"><span class="set-num g">1</span><img class="row" src="img/row01.png" alt="השורה של סעיף 1" width="176" height="28"><h3>הוראות קבועות: סעיף 1, וגם סעיף 12</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה לעשות:</strong> להדביק את ההוראה שלמטה בתיבה הגדולה של ההעדפות האישיות בסעיף 1, ובהוראות הקבועות של העוזר האישי בסעיף 12. ככה גם בשיחות רגילות ובטלפון קלוד יענה לך בעברית פשוטה. לא מוצא את התיבה? צילום מסך אליי.</p>
+    <div class="prompt"><div class="prompt-top"><b>ההוראה להדבקה</b><button class="copy" type="button">העתקה</button></div><pre>תענה לי תמיד בעברית פשוטה וקצרה, בלי מילים באנגלית ובלי מונחים טכניים. אני לא מתכנת ולא קורא אנגלית.
+כשאני צריך ללחוץ על משהו, תגיד לי איפה הוא במסך ואיך הוא נראה.
+בסוף כל תשובה: מה מחכה לי, ומה הצעד הבא.</pre></div></div>
+
+  <div class="set"><div class="set-head"><span class="set-num g">5</span><img class="row" src="img/row05.png" alt="השורה של סעיף 5" width="176" height="28"><h3>כמה מכסה נשארה</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה לעשות:</strong> להציץ לפני עבודה גדולה. אם יש שם אפשרות לשלם על שימוש נוסף, לא להדליק בלי לשאול אותי. <span class="unv">לבדוק</span></p></div>
+
+  <div class="set"><div class="set-head"><span class="set-num g">7</span><img class="row" src="img/row07.png" alt="השורה של סעיף 7" width="176" height="28"><h3>זיכרון</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה לעשות:</strong> להיכנס פעם אחת ולקרוא מה קלוד זוכר עליך מהשיחות הרגילות. משהו לא נכון? לתקן.</p></div>
+
+  <div class="set"><div class="set-head"><span class="set-num g">11</span><img class="row" src="img/row11.png" alt="השורה של סעיף 11" width="176" height="28"><h3>ההגדרות של קלוד קוד</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה לעשות:</strong> כלום. בדקתי מה מסומן אצלך, והכל כבר מכוון נכון. רק לא להדליק את "בלי שום הגנה". הפירוט המלא <a href="#appx">בנספח</a>.</p></div>
+
+  <div class="set"><div class="set-head"><span class="set-num g">17</span><img class="row" src="img/row17.png" alt="השורה של סעיף 17" width="176" height="28"><h3>סקילים</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה לעשות:</strong> רק להסתכל מה מותקן. לא לכבות סקיל בלי לשאול אותי, כי חלק מהם עובדים יחד.</p></div>
+
+  <div class="set"><div class="set-head"><span class="set-num g">18</span><img class="row" src="img/row18.png" alt="השורה של סעיף 18" width="176" height="28"><h3>חיבורים לכלים</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה לעשות:</strong> חיבור שלא משתמשים בו אפשר לכבות. לפני שמחברים ג'ימייל או דרייב, קודם עושים גיבוי.</p></div>
+
+  <div class="set"><div class="set-head"><span class="set-num r">20</span><img class="row" src="img/row20.png" alt="השורה של סעיף 20" width="176" height="28"><h3>מפתחות סודיים</h3><span class="pill r">לא לגעת בלי לבדוק</span></div>
+    <p><strong>מה לעשות:</strong> לא לגעת. מפתח הוא כמו סיסמה שנותנת גישה לחשבון ולכסף, ואף פעם לא מדביקים אותו בצ'אט.</p></div>
+
+  <div class="note warn"><b class="lbl">טעות נפוצה</b><p>ללחוץ על מתגים "כדי לנסות". חלק מהשינויים עולים כסף, וחלק מוחקים דברים. לא בטוח? לפני שלוחצים, שולחים לי צילום מסך.</p></div>
+  <div class="quiz" data-answer="0">
+    <p class="q"><b>בדוק שהבנתי:</b> איפה מכבים את האימון על השיחות שלך?</p>
+    <div class="opts"><button type="button">א. בסעיף 3, פרטיות: המתג השני מלמעלה</button><button type="button">ב. בסעיף 4, תשלום</button><button type="button">ג. בסעיף 20, מפתחות סודיים</button></div>
+    <p class="qa" hidden aria-live="polite"><b class="verdict"></b>התשובה הנכונה: א. המתג בסעיף 3. מכבים אותו פעם אחת, וזה חל על כל המכשירים.</p>
+  </div>
+</article>
+
+<!-- APPENDIX: full settings guide, outside the main track -->
+<section class="view appendix" id="appx" hidden>
+  <p class="l-meta"><span class="pn">נספח</span> · מדריך עזר למי שנתקע. לא חלק מהמסלול.</p>
+  <h2 tabindex="-1">מדריך ההגדרות המלא: כל 20 השורות</h2>
+  <p class="goal"><b>מה תקבל:</b> מה יש בכל שורה בתפריט ההגדרות, ומה לעשות בה. לא צריך לקרוא הכל: מוצאים את המספר בתמונה, וקוראים רק עליו.</p>
+  <figure class="shot"><img src="img/settings-menu.png" alt="תפריט ההגדרות עם מספר ותרגום לעברית ליד כל שורה" width="760" height="1193" loading="lazy"><figcaption>כל שורה בתפריט, עם מספר ותרגום. ירוק = כדאי להכיר, אפור = לא צריך לגעת, אדום = לא לגעת בלי לבדוק.</figcaption></figure>
+
+  <h3>סעיפים 1 עד 10</h3>
+  <div class="set"><div class="set-head"><span class="set-num g">1</span><img class="row" src="img/row01.png" alt="השורה של סעיף 1" width="176" height="28"><h3>כללי</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה יש בפנים:</strong> איך קלוד יקרא לך, מה העבודה שלך, ותיבה של הוראות קבועות לכל השיחות הרגילות ולטלפון. וגם המראה: בהיר או כהה, וסוג האותיות.</p>
+    <p><strong>מה לעשות:</strong> להדביק בתיבת ההוראות את ההוראה משיעור 17.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num x">2</span><img class="row" src="img/row02.png" alt="השורה של סעיף 2" width="176" height="28"><h3>החשבון</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> המייל שלך, יציאה מהחשבון, ומחיקת החשבון.</p>
+    <p><strong>מה לעשות:</strong> כלום. ובשום מקרה לא ללחוץ על מחיקת החשבון.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num g">3</span><img class="row" src="img/row03.png" alt="השורה של סעיף 3" width="176" height="28"><h3>פרטיות</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה יש בפנים:</strong> מתג שקובע אם השיחות שלך משמשות לאימון, מתג של מיקום (באיזו עיר אתה), וכפתור להורדת גיבוי של כל השיחות.</p>
+    <p><strong>מה לעשות:</strong> לכבות את המתג השני מלמעלה (התמונה בשיעור 17). המתג של המיקום: לא חובה.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num g">4</span><img class="row" src="img/row04.png" alt="השורה של סעיף 4" width="176" height="28"><h3>תשלום</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה יש בפנים:</strong> איזה מנוי יש לך (בסיסי או גדול), אמצעי התשלום והחשבוניות.</p>
+    <p><strong>מה לעשות:</strong> רק לבדוק איזה מנוי יש לך. לא לשנות כאן כלום.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num g">5</span><img class="row" src="img/row05.png" alt="השורה של סעיף 5" width="176" height="28"><h3>כמה מכסה נשארה</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה יש בפנים:</strong> פסים שמראים כמה נשאר לך לשעות הקרובות ולשבוע, ומתי זה מתמלא מחדש.</p>
+    <p><strong>מה לעשות:</strong> להציץ לפני עבודה גדולה. תשלום על שימוש נוסף: לא להדליק בלי לשאול אותי. <span class="unv">לבדוק</span></p></div>
+  <div class="set"><div class="set-head"><span class="set-num x">6</span><img class="row" src="img/row06.png" alt="השורה של סעיף 6" width="176" height="28"><h3>יכולות</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> מה מותר לקלוד בשיחות הרגילות: לחפש בשיחות קודמות, ליצור קבצים, ולהראות גרפים ודפים.</p>
+    <p><strong>מה לעשות:</strong> להשאיר כמו שזה.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num g">7</span><img class="row" src="img/row07.png" alt="השורה של סעיף 7" width="176" height="28"><h3>זיכרון</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה יש בפנים:</strong> מה קלוד זוכר עליך מהשיחות הרגילות. אפשר לקרוא, לתקן ולמחוק.</p>
+    <p><strong>מה לעשות:</strong> לקרוא פעם אחת. את ההוראות לעבודה כאן במחשב אני שומר בנפרד, בקבצים במחשב, והן לא מופיעות שם.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num x">8</span><img class="row" src="img/row08.png" alt="השורה של סעיף 8" width="176" height="28"><h3>צבעי מותג לעיצוב</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> צבעים, אותיות ולוגו של מותג, בשביל כלי העיצוב של קלוד.</p>
+    <p><strong>מה לעשות:</strong> כרגע כלום. בעתיד אפשר לשמור כאן את הצבעים של שואו טיים.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num x">9</span><img class="row" src="img/row09.png" alt="השורה של סעיף 9" width="176" height="28"><h3>סיכום חודשי</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> פעם בחודש: על מה עבדת, ובאיזה יום ושעה אתה הכי פעיל. עובד רק כשהזיכרון דלוק.</p>
+    <p><strong>מה לעשות:</strong> לא חובה. מעניין להציץ.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num x">10</span><img class="row" src="img/row10.png" alt="השורה של סעיף 10" width="176" height="28"><h3>תזכורות להפסקה</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> תזכורת לקחת הפסקה אחרי זמן מסוים, ושעות שקטות.</p>
+    <p><strong>מה לעשות:</strong> רק אם אתה רוצה.</p></div>
+
+  <h3>סעיפים 11 עד 13</h3>
+  <div class="set"><div class="set-head"><span class="set-num g">11</span><img class="row" src="img/row11.png" alt="השורה של סעיף 11" width="176" height="28"><h3>ההגדרות של קלוד קוד</h3><span class="pill g">כדאי להכיר</span></div>
+    <p>בדקתי ב-5 באוקטובר מה מסומן אצלך:</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>מה יש שם</th><th>אצלך</th><th>מה לעשות</th></tr></thead>
+      <tbody>
+        <tr><td>התראה כשקלוד צריך אישור, שואל שאלה או מסיים</td><td>דלוק</td><td>להשאיר</td></tr>
+        <tr><td>צליל להתראות</td><td>דלוק</td><td>להשאיר</td></tr>
+        <tr><td>הבהוב בשורת המשימות כשקלוד מחכה לך</td><td>כבוי</td><td>להדליק אם אתה מפספס הודעות</td></tr>
+        <tr><td>להשאיר את המחשב ער כשקלוד עובד, גם על סוללה</td><td>דלוק</td><td>להשאיר. חשוב לעבודה ארוכה על סרטונים</td></tr>
+        <tr><td>שליטה מהטלפון בשיחות חדשות</td><td>דלוק</td><td>להשאיר</td></tr>
+        <tr><td>הצעה לבקשה הבאה בתיבת הכתיבה</td><td>דלוק</td><td>אפשר לכבות: כל הצעה אוכלת קצת מכסה</td></tr>
+        <tr><td>סגנון התשובות</td><td>רגיל</td><td>להשאיר</td></tr>
+        <tr><td>הדפדפן של קלוד, שבודק אתרים בעצמו</td><td>דלוק</td><td>להשאיר</td></tr>
+        <tr><td>העברה אוטומטית של שיחות ישנות לארכיון</td><td>כבוי</td><td>להשאיר</td></tr>
+        <tr><td>אישור למצב "בלי שום הגנה"</td><td>כבוי</td><td><strong>לא לגעת. אף פעם.</strong></td></tr>
+        <tr><td>שמות ומקומות של עותקי עבודה</td><td>כמו שהגיע</td><td>לא לגעת. זה למתכנתים</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note key"><b class="lbl">מצב העבודה לא נמצא כאן</b><p>את מצב העבודה בוחרים בכפתור שליד תיבת הכתיבה. האפליקציה זוכרת את הבחירה לכל תיקייה בנפרד, ושיחה בתיקייה חדשה מתחילה בידני. רוצה שכל שיחה חדשה תתחיל באוטומטי? תכתוב לי.</p></div></div>
+  <div class="set"><div class="set-head"><span class="set-num g">12</span><img class="row" src="img/row12.png" alt="השורה של סעיף 12" width="176" height="28"><h3>העוזר האישי</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה יש בפנים:</strong> הוראות קבועות לעוזר האישי, ואילו תיקיות במחשב מותר לו לראות.</p>
+    <p><strong>מה לעשות:</strong> להדביק בהוראות הקבועות את ההוראה משיעור 17.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num x">13</span><img class="row" src="img/row13.png" alt="השורה של סעיף 13" width="176" height="28"><h3>התוסף לכרום</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> ההגדרות של קלוד בתוך הדפדפן כרום: באילו אתרים מותר לו לפעול.</p>
+    <p><strong>מה לעשות:</strong> כלום. כרגע התוסף לא מחובר אצלך.</p></div>
+
+  <h3>סעיפים 14 עד 20</h3>
+  <div class="set"><div class="set-head"><span class="set-num x">14</span><img class="row" src="img/row14.png" alt="השורה של סעיף 14" width="176" height="28"><h3>המחשב</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> איך האפליקציה מתנהגת במחשב, ו"שליטה במסך": קלוד מזיז את העכבר ולוחץ בעצמו בתוכנות אחרות.</p>
+    <p><strong>מה לעשות:</strong> כלום. השליטה במסך כבויה, ועדיף שתישאר כבויה עד שנצטרך אותה.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num x">15</span><img class="row" src="img/row15.png" alt="השורה של סעיף 15" width="176" height="28"><h3>תוספים למחשב</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> כלים נוספים שאפשר להתקין לאפליקציה.</p>
+    <p><strong>מה לעשות:</strong> כלום. לא להתקין מכאן בלי לשאול אותי.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num x">16</span><img class="row" src="img/row16.png" alt="השורה של סעיף 16" width="176" height="28"><h3>למתכנתים</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> הגדרות טכניות.</p>
+    <p><strong>מה לעשות:</strong> כלום.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num g">17</span><img class="row" src="img/row17.png" alt="השורה של סעיף 17" width="176" height="28"><h3>סקילים</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה יש בפנים:</strong> רשימת הסקילים שמותקנים אצלך, עם מתג לכל אחד.</p>
+    <p><strong>מה לעשות:</strong> רק להסתכל. לא לכבות סקיל בלי לשאול אותי.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num g">18</span><img class="row" src="img/row18.png" alt="השורה של סעיף 18" width="176" height="28"><h3>חיבורים לכלים</h3><span class="pill g">כדאי להכיר</span></div>
+    <p><strong>מה יש בפנים:</strong> הכלים שמחוברים לקלוד: אצלך קנבה, פיגמה ואדובי.</p>
+    <p><strong>מה לעשות:</strong> חיבור שלא משתמשים בו אפשר לכבות. לפני שמחברים ג'ימייל או דרייב, קודם גיבוי.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num x">19</span><img class="row" src="img/row19.png" alt="השורה של סעיף 19" width="176" height="28"><h3>חבילות כלים</h3><span class="pill x">לא צריך לגעת</span></div>
+    <p><strong>מה יש בפנים:</strong> החבילות שהתקנו יחד: כלי עיצוב, בדיקת אבטחה ויצירת סקילים.</p>
+    <p><strong>מה לעשות:</strong> כלום.</p></div>
+  <div class="set"><div class="set-head"><span class="set-num r">20</span><img class="row" src="img/row20.png" alt="השורה של סעיף 20" width="176" height="28"><h3>מפתחות סודיים</h3><span class="pill r">לא לגעת בלי לבדוק</span></div>
+    <p><strong>מה יש בפנים:</strong> פותח אתר של מתכנתים. מפתח הוא כמו סיסמה שנותנת גישה לחשבון ולכסף.</p>
+    <p><strong>מה לעשות:</strong> לא לגעת, ואף פעם לא להדביק מפתח בצ'אט.</p></div>
+  <div class="foot"><a class="btn ghost" href="#home">→ לפתיחה</a><a class="btn primary" href="#set">לשיעור ההגדרות ←</a></div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var KEY = 'cc-course-v2';
+  var PARTS = {
+    '1': {name:'יסודות', desc:'קוראים לפי הסדר, ובסוף תרגיל קטן. בערך 30 דקות.'},
+    '2': {name:'מתכונים', desc:'פותחים כשרוצים לעשות משהו מסוים.'},
+    '3': {name:'עזרה מהירה', desc:'כשמשהו תקוע, או כשמחפשים בקשה מוכנה.'},
+    '4': {name:'לסיום', desc:'מבחן הנהיגה שלך, וההגדרות שחשוב להכיר.'}
+  };
+  var home = document.getElementById('home');
+  var appx = document.getElementById('appx');
+  var lessons = [].slice.call(document.querySelectorAll('article.lesson'));
+  var N = lessons.length;
+  var state = {done:{}, last:-1};
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && saved.done) state = saved; } catch(e) {}
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+  var mq = window.matchMedia ? window.matchMedia('(min-width:1000px)') : {matches:true};
+  var navd = document.getElementById('navd');
+  var cur = -1;
+
+  function title(a){ var h = a.querySelector('h2').cloneNode(true); var t = h.querySelector('.new'); if (t) t.remove(); return h.textContent.trim(); }
+  function linkHTML(a, i){ return '<a href="#' + a.id + '" data-i="' + i + '"><span class="dot">' + (i+1) + '</span><span>' + title(a) + '</span></a>'; }
+  var appxLink = '<a href="#appx" data-appx="1"><span class="dot book">+</span><span>מדריך ההגדרות המלא</span></a>';
+
+  // lesson list (side) and part cards (home)
+  var navHTML = '', partsHTML = '';
+  Object.keys(PARTS).forEach(function(p){
+    var items = '';
+    lessons.forEach(function(a, i){ if (a.dataset.part === p) items += '<li>' + linkHTML(a, i) + '</li>'; });
+    navHTML += '<p class="part-name">חלק ' + p + ': ' + PARTS[p].name + '</p><ol>' + items + '</ol>';
+    partsHTML += '<div class="part"><span class="pnum">0' + p + '</span><h3>' + PARTS[p].name + '</h3><p>' + PARTS[p].desc + '</p><ol>' + items + '</ol></div>';
+  });
+  navHTML += '<p class="part-name">נספח</p><ol><li>' + appxLink + '</li></ol>';
+  partsHTML += '<div class="part"><span class="pnum">+</span><h3>נספח</h3><p>מה יש בכל אחת מ-20 השורות בהגדרות. למי שנתקע.</p><ol><li>' + appxLink + '</li></ol></div>';
+  document.getElementById('navList').innerHTML = navHTML;
+  document.getElementById('parts').innerHTML = partsHTML;
+  document.getElementById('bar').innerHTML = new Array(N + 1).join('<i></i>');
+
+  // per-lesson meta line and footer
+  lessons.forEach(function(a, i){
+    a.querySelector('.l-meta').innerHTML = '<span class="pn">שיעור ' + (i+1) + ' מתוך ' + N + '</span> · חלק ' + a.dataset.part + ': ' + PARTS[a.dataset.part].name + ' · ' + a.dataset.min + ' דקות';
+    var prev = i > 0 ? '<a class="btn ghost" href="#' + lessons[i-1].id + '">→ הקודם</a>' : '<a class="btn ghost" href="#home">→ לפתיחה</a>';
+    var next = i < N-1 ? '<a class="btn primary" href="#' + lessons[i+1].id + '">הבא ←</a>' : '<a class="btn primary" href="#home">סיום ←</a>';
+    var f = document.createElement('div');
+    f.className = 'foot';
+    f.innerHTML = prev + '<div class="grp"><button class="btn read" type="button" aria-pressed="false">סמן שקראתי</button>' + next + '</div>';
+    f.querySelector('.read').addEventListener('click', function(){
+      if (state.done[a.id]) delete state.done[a.id]; else state.done[a.id] = 1;
+      save(); update();
+    });
+    a.appendChild(f);
+  });
+
+  // "check that I understood" questions
+  [].forEach.call(document.querySelectorAll('.quiz'), function(q){
+    var ans = +q.getAttribute('data-answer');
+    var btns = [].slice.call(q.querySelectorAll('.opts button'));
+    var out = q.querySelector('.qa');
+    btns.forEach(function(b, i){
+      b.addEventListener('click', function(){
+        btns.forEach(function(x, j){
+          x.classList.toggle('right', j === ans);
+          x.classList.toggle('wrong', j === i && i !== ans);
+          x.setAttribute('aria-pressed', j === i ? 'true' : 'false');
+        });
+        out.querySelector('.verdict').textContent = i === ans ? 'נכון! ' : 'לא בדיוק. ';
+        out.hidden = false;
+      });
+    });
+  });
+
+  function update(){
+    var count = 0;
+    lessons.forEach(function(a){ if (state.done[a.id]) count++; });
+    document.getElementById('meterTxt').innerHTML = 'קראת <b>' + count + '</b> מתוך ' + N + ' שיעורים';
+    document.getElementById('navSum').textContent = 'כל השיעורים (' + count + ' מתוך ' + N + ')';
+    [].forEach.call(document.querySelectorAll('#bar i'), function(el, i){
+      el.className = (state.done[lessons[i].id] ? 'done' : '') + (i === cur ? ' cur' : '');
+    });
+    [].forEach.call(document.querySelectorAll('a[data-i]'), function(el){
+      var i = +el.getAttribute('data-i');
+      el.classList.toggle('is-done', !!state.done[lessons[i].id]);
+      var dot = el.querySelector('.dot'); dot.textContent = state.done[lessons[i].id] ? '✓' : (i+1);
+      if (el.closest('.side')) { if (i === cur) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current'); }
+    });
+    [].forEach.call(document.querySelectorAll('.side a[data-appx]'), function(el){
+      if (cur === -2) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(a){
+      var b = a.querySelector('.read'); var on = !!state.done[a.id];
+      b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.textContent = on ? '✓ קראתי' : 'סמן שקראתי';
+    });
+    var start = document.getElementById('startBtn');
+    var firstOpen = -1;
+    for (var i = 0; i < N; i++) { if (!state.done[lessons[i].id]) { firstOpen = i; break; } }
+    if (count === 0) { start.href = '#l1'; start.textContent = 'להתחיל משיעור 1 ←'; }
+    else if (firstOpen === -1) { start.href = '#l1'; start.textContent = 'סיימת הכל. לחזור לשיעור 1 ←'; }
+    else { start.href = '#' + lessons[firstOpen].id; start.textContent = 'להמשיך: שיעור ' + (firstOpen+1) + ' ←'; }
+  }
+
+  function route(fromNav){
+    var id = location.hash.slice(1);
+    var idx = -1;
+    lessons.forEach(function(a, i){ if (a.id === id) idx = i; });
+    var isAppx = id === 'appx';
+    cur = isAppx ? -2 : idx;
+    home.hidden = idx !== -1 || isAppx;
+    appx.hidden = !isAppx;
+    lessons.forEach(function(a, i){ a.hidden = i !== idx; });
+    if (idx >= 0) { state.last = idx; save(); }
+    update();
+    if (fromNav) {
+      var h = isAppx ? appx.querySelector('h2') : (idx >= 0 ? lessons[idx].querySelector('h2') : home.querySelector('h1'));
+      if (!mq.matches) navd.open = false;
+      // run after the browser's own jump-to-anchor, so the progress bar stays in view
+      setTimeout(function(){
+        window.scrollTo(0, 0);
+        try { h.focus({preventScroll:true}); } catch(e) { h.focus(); }
+      }, 0);
+    }
+  }
+
+  navd.open = mq.matches;
+  window.addEventListener('hashchange', function(){ route(true); });
+  window.addEventListener('beforeprint', function(){ [].forEach.call(document.querySelectorAll('details'), function(d){ d.open = true; }); });
+  route(false);
+  if (cur !== -1) setTimeout(function(){ window.scrollTo(0, 0); }, 0);
+
+  // copy buttons: prompt boxes copy their text, command buttons copy data-copy
+  [].forEach.call(document.querySelectorAll('button.copy'), function(btn){
+    btn.addEventListener('click', function(){
+      var direct = btn.getAttribute('data-copy');
+      var pre = direct === null ? btn.closest('.prompt').querySelector('pre') : null;
+      var text = direct !== null ? direct : pre.innerText;
+      var done = function(){ var t = btn.textContent; btn.textContent = 'הועתק'; setTimeout(function(){ btn.textContent = t; }, 1500); };
+      var fallback = function(){
+        if (!pre) { btn.textContent = 'לא הצליח'; return; }
+        try { var r = document.createRange(); r.selectNodeContents(pre); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'סומן, להעתיק'; } catch(e) {}
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, fallback); }
+      else { fallback(); }
+    });
+  });
+})();
+</script>
+
+</body></html>
