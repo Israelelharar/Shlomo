@@ -43,12 +43,17 @@ His reference was a fast motion-graphics reel. Keep **every** shot about the pro
   - `particles`: ~1400 dots forming a heart, beating, then exploding.
   - `wall`: a 3D tilted wall of 25 product screens ("לזוגות אחרים").
   - `end`: the seal, fireworks, "אתר משלכם / עם הסיפור שלכם" and the WhatsApp number. No captions on the end card.
+    Override per product with `badge`, `sealBg`, `glow`, `t1`, `t2`, `waLabel` (course videos: badge "17", t1 "הקישור בביו").
+  - Other options: chips take `size`; `ring` takes `once: true` for fewer, longer words.
 - **Type:**
   - Secular One for the giant words.
   - Playpen Sans Hebrew (hand) for the second line.
   - Frank Ruhl Libre 900 where needed.
   - All fonts come from @fontsource files (OFL).
+- **Playpen Sans Hebrew draws צ like "3" and ע oddly** ("ק3רים"). For the Claude Code course videos the hand lines were
+  switched to Frank Ruhl 900 (`.hand { font-family: Frank; font-weight: 900; }` in the local copy of `stage.html`).
 - **Captions:** always on, because people watch muted.
+  - Put ` | ` in a line's text to choose where caption chunks break (so "קלוד קוד" never splits).
   - 2–3 words at a time, Secular One 84px, white with a thick dark stroke.
   - The spoken word is highlighted in gold, or ice-blue for the pet video.
   - Placed around y≈1270–1490.
@@ -109,3 +114,10 @@ frank-ruhl-libre,playpen-sans-hebrew,assistant}`) next to `shots/` (screenshots)
    ```
 9. Check a tile sheet of the final mp4 (`fps=1.5,scale=180:320,tile=8x4`), then send the files and commit them to
    `סרטונים/`.
+
+## 7. Pain → problem → solution (Claude Code course videos, 2026-10-09)
+He asked for "more pain, problem and solution, very focused": **one pain per video**.
+- 0–8s: the pain, concrete and personal (chat bubbles piling up, a red counter, a grey "גנרי.", "נמחק.").
+- Then the real cause in one line ("הבעיה היא לא קלוד").
+- Then the solution, straight from a real lesson screenshot, plus one copyable sentence.
+- Then the payoff line (gold), a wall of course screens ("17 שיעורים / של 3 דקות") and the end card.

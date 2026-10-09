@@ -67,14 +67,14 @@ const B = {};
 
 B.ring = (s) => {
   const el = $(`<div class="scene" style="background:radial-gradient(70% 45% at 50% 42%, ${s.glow || '#3a1022'} 0%, #0e0b12 70%)"><div class="abs rings" style="left:0;right:0;top:250px;height:900px;perspective:1300px"></div>
-    <div class="abs ctr" style="left:0;right:0;top:560px;text-align:center"><div class="h1" style="color:#fff;font-size:190px;text-shadow:0 0 40px ${s.accent},0 0 120px ${s.accent}">${s.center}</div><div class="hand sub" style="font-size:64px;color:${s.accent};margin-top:28px">${s.sub || ''}</div></div></div>`);
+    <div class="abs ctr" style="left:0;right:0;top:560px;text-align:center"><div class="h1" style="color:#fff;font-size:190px;text-shadow:0 0 40px ${s.accent},0 0 120px ${s.accent}">${s.center}</div><div class="hand sub" style="font-size:88px;color:${s.accent};margin-top:22px">${s.sub || ''}</div></div></div>`);
   const rows = el.querySelector('.rings');
   const R = 600, rowsSpec = [[-330, 1, 84], [0, -1, 60], [290, 1, 84]];
   const words = [];
   rowsSpec.forEach(([y, dir, size], ri) => {
     const row = $(`<div class="abs" style="left:0;right:0;top:${450 + y}px;height:0;transform-style:preserve-3d"></div>`);
     rows.appendChild(row);
-    const list = s.words.concat(s.words);
+    const list = s.once ? s.words : s.words.concat(s.words);
     list.forEach((w, i) => {
       const sp = $(`<span class="ringWord" style="font-size:${size}px"></span>`); sp.textContent = w;
       const filled = (i + ri) % 2 === 0;
@@ -122,7 +122,7 @@ B.block = (s) => {
     el.appendChild(c); items.push({ el: c, kind: 'pet', at: .1 });
   }
   (s.chips || []).forEach((ch) => {
-    const c = $(`<div class="chip" style="left:${ch.x}px;top:${ch.y}px;background:${ch.bg || '#fff'};color:${ch.fg || '#1a1015'}">${ch.text}</div>`);
+    const c = $(`<div class="chip" style="font-size:${ch.size || 46}px;left:${ch.x}px;top:${ch.y}px;background:${ch.bg || '#fff'};color:${ch.fg || '#1a1015'}">${ch.text}</div>`);
     el.appendChild(c); items.push({ el: c, kind: 'chip', at: ch.at, rot: ch.rot ?? 0 });
   });
   return { el, draw(lt, dur) {
@@ -194,7 +194,7 @@ B.big = (s) => {
 
 B.wall = (s) => {
   const el = $(`<div class="scene" style="background:#0e0b12"><div class="abs plane" style="left:50%;top:50%;width:2400px;height:3600px;margin:-1800px 0 0 -1200px;transform-style:preserve-3d"></div>
-    <div class="abs head" style="left:0;right:0;top:190px;text-align:center"><div class="h1 l1" style="color:#fff;font-size:140px;text-shadow:0 0 50px #000,0 0 30px ${s.accent}">${s.h1[0]}</div><div class="hand l2" style="font-size:84px;color:${s.accent};text-shadow:0 0 30px #000">${s.h1[1] || ''}</div></div></div>`);
+    <div class="abs" style="left:0;right:0;top:0;height:700px;background:linear-gradient(#0e0b12f2 60%,#0e0b1200)"></div><div class="abs head" style="left:0;right:0;top:190px;text-align:center"><div class="h1 l1" style="color:#fff;font-size:140px;text-shadow:0 0 50px #000,0 0 30px ${s.accent}">${s.h1[0]}</div><div class="hand l2" style="font-size:84px;color:${s.accent};text-shadow:0 0 30px #000">${s.h1[1] || ''}</div></div></div>`);
   const plane = el.querySelector('.plane');
   const cols = 5, rows = 5, cw = 420, ch = 903, gap = 60;
   const tiles = [];
@@ -241,10 +241,10 @@ B.particles = (s) => {
 };
 
 B.end = (s) => {
-  const el = $(`<div class="scene" style="background:radial-gradient(70% 45% at 50% 40%, #5a1430 0%, #0e0b12 75%)">
-    <svg class="abs seal" viewBox="0 0 64 64" style="left:390px;top:300px;width:300px;height:300px"><circle cx="32" cy="32" r="30" fill="#C2385A"/><circle cx="32" cy="32" r="25" fill="none" stroke="#000" stroke-opacity=".15" stroke-width="3"/><path d="M32 45s-11-6.9-14.6-13.5C15 27.1 17.9 21.5 23.4 21.5c3.1 0 5.5 1.9 8.6 5 3.1-3.1 5.5-5 8.6-5 5.5 0 8.3 5.6 6 10C43 38.1 32 45 32 45z" fill="#FFE7B8"/></svg>
-    <div class="abs t1" style="left:0;right:0;top:660px;text-align:center"><div class="h1" style="color:#fff;font-size:150px;text-shadow:0 0 50px #c2385a">אתר משלכם</div><div class="hand" style="font-size:76px;color:#ffd36b;margin-top:16px">עם הסיפור שלכם</div></div>
-    <div class="abs t2" style="left:0;right:0;top:1000px;text-align:center"><div style="font-family:Sec;font-size:56px;color:#fff;opacity:.85">להזמנות בוואטסאפ</div><div class="num" style="font-family:Sec;font-size:128px;color:#ffd36b;direction:ltr;text-shadow:0 0 40px rgba(255,211,107,.6)">054-6631352</div><div style="font-family:Sec;font-size:48px;color:#fff;opacity:.7;margin-top:10px">או בהודעה כאן בטיקטוק</div></div></div>`);
+  const el = $(`<div class="scene" style="background:radial-gradient(70% 45% at 50% 40%, ${s.glow || '#5a1430'} 0%, #0e0b12 75%)">
+    ${s.badge ? `<div class="abs seal" style="left:390px;top:300px;width:300px;height:300px;border-radius:50%;background:${s.sealBg || '#C2385A'};box-shadow:inset 0 0 0 16px rgba(0,0,0,.14),0 0 80px ${s.sealBg || '#C2385A'};display:grid;place-items:center;font-family:Sec;font-size:${s.badgeSize || 150}px;line-height:1;color:${s.badgeFg || '#FFE7B8'}">${s.badge}</div>` : `<svg class="abs seal" viewBox="0 0 64 64" style="left:390px;top:300px;width:300px;height:300px"><circle cx="32" cy="32" r="30" fill="#C2385A"/><circle cx="32" cy="32" r="25" fill="none" stroke="#000" stroke-opacity=".15" stroke-width="3"/><path d="M32 45s-11-6.9-14.6-13.5C15 27.1 17.9 21.5 23.4 21.5c3.1 0 5.5 1.9 8.6 5 3.1-3.1 5.5-5 8.6-5 5.5 0 8.3 5.6 6 10C43 38.1 32 45 32 45z" fill="#FFE7B8"/></svg>`}
+    <div class="abs t1" style="left:0;right:0;top:660px;text-align:center"><div class="h1" style="color:#fff;font-size:150px;text-shadow:0 0 50px ${s.sealBg || '#c2385a'}">${s.t1 || 'אתר משלכם'}</div><div class="hand" style="font-size:76px;color:#ffd36b;margin-top:16px">${s.t2 || 'עם הסיפור שלכם'}</div></div>
+    <div class="abs t2" style="left:0;right:0;top:1000px;text-align:center"><div style="font-family:Sec;font-size:56px;color:#fff;opacity:.85">${s.waLabel || 'להזמנות בוואטסאפ'}</div><div class="num" style="font-family:Sec;font-size:128px;color:#ffd36b;direction:ltr;text-shadow:0 0 40px rgba(255,211,107,.6)">054-6631352</div><div style="font-family:Sec;font-size:48px;color:#fff;opacity:.7;margin-top:10px">או בהודעה כאן בטיקטוק</div></div></div>`);
   const r = rng(11); const sparks = [];
   for (let b = 0; b < 4; b++) { const cx = 180 + r() * 720, cy = 250 + r() * 500, t0 = .2 + b * .35, col = ['#ffd36b', '#ff6f9c', '#9fe8ff', '#fff'][b]; for (let i = 0; i < 90; i++) { const a = r() * Math.PI * 2, v = 250 + r() * 500; sparks.push({ cx, cy, t0, a, v, col }); } }
   return { el, particles: true, drawFx(lt) {
@@ -307,11 +307,14 @@ function render(t) {
   let li = -1; for (let k = 0; k < V.lines.length; k++) if (t >= V.lines[k][0] - .05) li = k;
   if (li < 0 || s.noCap || (li === V.lines.length - 1 && s.kind === 'end' && false)) { cap.innerHTML = ''; return; }
   const [a, b, text] = V.lines[li];
-  const words = text.split(' ');
+  // '|' marks caption chunk breaks; without it, chunks of 3 words
+  const toks = text.split(' ').filter(Boolean); const words = [], grp = []; let g = 0;
+  if (toks.includes('|')) toks.forEach((w) => { if (w === '|') g++; else { words.push(w); grp.push(g); } });
+  else toks.forEach((w, k) => { words.push(w); grp.push(Math.floor(k / 3)); });
   const lens = words.map((w) => w.length + 1.5), tot = lens.reduce((x, y) => x + y, 0);
   const times = []; let acc = 0; for (const l of lens) { times.push(a + (acc / tot) * Math.max(.3, b - a)); acc += l; }
   let wi = 0; for (let k = 0; k < words.length; k++) if (t >= times[k]) wi = k;
-  const chunk = Math.floor(wi / 3), from = chunk * 3, part = words.slice(from, from + 3);
+  const chunk = grp[wi], from = grp.indexOf(chunk), part = words.filter((_, k) => grp[k] === chunk);
   const key = `${li}:${chunk}`;
   if (cap.dataset.k !== key) { cap.dataset.k = key; cap.innerHTML = part.map((w) => `<span class="w">${w}</span>`).join(' '); }
   [...cap.children].forEach((w, k) => { w.className = 'w' + (from + k === wi ? ' on' : ''); const x = t - times[from + k]; w.style.opacity = x >= -0.02 ? 1 : .0; w.style.transform = x >= -0.02 ? `scale(${.6 + .4 * back(x / .18, 3)})` : 'scale(.6)'; });
